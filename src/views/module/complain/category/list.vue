@@ -37,6 +37,9 @@
           <el-table-column prop="title" :label="$t('complain.category.title')">
           </el-table-column>
 
+          <el-table-column prop="sort" :label="$t('common.sort')">
+          </el-table-column>
+
           <el-table-column prop="create_time" :label="$t('common.create_time')">
           </el-table-column>
 

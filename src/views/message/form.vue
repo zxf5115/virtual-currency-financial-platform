@@ -52,7 +52,7 @@
           </el-form-item>
 
           <el-form-item class="mavon" prop="content" :label="$t('message.content')">
-            <mavon-editor class="mavon" :boxShadow="false" v-model="dataForm.content" ref="md" @imgAdd="$imgAdd" @change="change"/>
+            <el-input type="textarea" :placeholder="$t('common.please_input')+$t('message.content')" v-model="dataForm.content"></el-input>
           </el-form-item>
 
           <el-form-item>
@@ -71,13 +71,8 @@
 
 <script>
   import common from '@/views/common/base'
-  import { mavonEditor } from 'mavon-editor'
-  import 'mavon-editor/dist/css/index.css'
   export default {
     extends: common,
-    components: {
-      mavonEditor
-    },
     data() {
       return {
         model: 'message',
@@ -291,28 +286,6 @@
 
         //储存当前最后的结果 作为下次的老数据
         this.oldChooseRoleList[1] = this.dataForm.roleList
-      },
-      // 将图片上传到服务器，返回地址替换到md中
-      $imgAdd (pos, $file) {
-        let formdata = new FormData()
-        formdata.append('file', $file)
-        // 这里没有服务器供大家尝试，可将下面上传接口替换为你自己的服务器接口
-        this.$http({
-          url: this.$http.adornUrl('/file/picture'),
-          method: 'post',
-          data: formdata,
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }).then(({data}) => {
-          if (data && data.status === 200) {
-            this.$refs.md.$img2Url(pos, data.data)
-          } else {
-            this.$message.error(data.data.message)
-          }
-        })
-      },
-      change (value, render) {
-        // render 为 markdown 解析后的结果
-        this.html = render
       },
     },
     created() {

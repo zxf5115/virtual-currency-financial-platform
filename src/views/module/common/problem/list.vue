@@ -10,6 +10,11 @@
               </el-button>
             </router-link>
           </div>
+          <div>
+            <el-button v-if="isAuth('module:common:problem:category:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_common_problem_category_list'})">
+              {{ $t('problem.category.list') }}
+            </el-button>
+          </div>
         </div>
         <div class="admin_main_block_right">
           <div>
@@ -40,6 +45,14 @@
           </el-table-column>
 
           <el-table-column prop="id" label="#" width="70px">
+          </el-table-column>
+
+          <el-table-column :label="$t('problem.category.title')">
+            <template slot-scope="scope">
+              <span v-if="scope.row.category">
+                {{ scope.row.category.title }}
+              </span>
+            </template>
           </el-table-column>
 
           <el-table-column prop="title" :label="$t('problem.title')">

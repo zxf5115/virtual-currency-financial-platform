@@ -16,13 +16,20 @@
       </div>
 
       <div class="admin_form_main">
-        <el-form label-width="120px" ref="dataForm" :model="dataForm" :rules="dataRule">
+        <el-form label-width="140px" ref="dataForm" :model="dataForm" :rules="dataRule">
+
+          <el-form-item :label="$t('problem.category.title')" prop="category_id">
+            <el-select v-model="dataForm.category_id" :placeholder="$t('common.please_select')+$t('problem.category.title')">
+              <el-option v-for="(v,k) in categoryList" :label="v.title" :key="k" :value="v.id"></el-option>
+            </el-select>
+          </el-form-item>
+
           <el-form-item :label="$t('problem.title')" prop="title">
             <el-input :placeholder="$t('problem.title')" v-model="dataForm.title"></el-input>
           </el-form-item>
 
           <el-form-item class="mavon" prop="content" :label="$t('problem.content')">
-            <div id="content"></div>
+            <editor ref="editor" :value="dataForm.content"></editor>
           </el-form-item>
 
           <el-form-item>
@@ -42,22 +49,21 @@
 
 <script>
   import common from '@/views/common/base'
-  import Vditor from "vditor"
-  import "vditor/dist/index.css"
-  export default
-  {
+  import Editor from "@/components/form/editor"
+  export default {
     extends: common,
     components: {
-      Vditor
+      Editor
     },
     data()
     {
       return {
         model: 'common/problem',
-        contentEditor: '',
+        categoryList: [],
         dataForm:
         {
           id: 0,
+          category_id: '',
           title: '',
           content: '',
         },
@@ -86,8 +92,9 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
-                this.dataForm.title     = data.data.title
-                this.contentEditor.setValue(data.data.content)
+                this.dataForm.category_id = data.data.category_id
+                this.dataForm.title       = data.data.title
+                this.dataForm.content     = data.data.content
               }
             })
           }
@@ -102,8 +109,9 @@
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
+                'category_id': this.dataForm.category_id,
                 'title': this.dataForm.title,
-                'content': this.contentEditor.getValue(),
+                'content': this.$refs.editor.content,
               })
             }).then(({data}) => {
               if (data && data.status === 200) {
@@ -120,37 +128,24 @@
       {
         this.$refs['dataForm'].resetFields();
       },
-      initContentVditor () {
-        this.contentEditor = new Vditor("content",{
-          multiple: false,
-          height: 400,
-          "mode": "sv",
-          "preview": {
-            "mode": "both"
-          },
-          toolbarConfig:{
-            pin:true
-          },
-          cache:{
-            enable:false
-          },
-          upload: {
-            accept: 'image/*, .mp3, .wav, .mov, .mp4',
-            token: 'test',
-            headers: {
-              'Authorization': 'Bearer ' + localStorage.getItem('token')
-            },
-            url: this.$http.adornUrl('/file/batchRichText')
-          },
+      loadCategoryList () {
+        this.$http({
+          url: this.$http.adornUrl('/common/problem/category/select'),
+          method: 'get'
+        }).then(({data}) => {
+          if (data && data.status === 200) {
+            this.categoryList = data.data
+          } else {
+            this.$message.error(this.$t(data.message))
+          }
         })
       },
     },
     created(request)
     {
       this.init();
-    },
-    mounted () {
-      this.initContentVditor();
+
+      this.loadCategoryList();
     },
   };
 </script>

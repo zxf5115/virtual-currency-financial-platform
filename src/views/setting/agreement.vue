@@ -17,7 +17,7 @@
           </el-form-item>
 
           <el-form-item class="mavon" prop="content" :label="$t('config.agreement.content')">
-            <div id="content"></div>
+            <editor ref="editor" :value="dataForm.content"></editor>
           </el-form-item>
 
           <el-form-item>
@@ -33,18 +33,16 @@
 
 <script>
   import common from '@/views/common/base'
-  import Vditor from "vditor"
-  import "vditor/dist/index.css"
+  import Editor from "@/components/form/editor"
   export default {
     extends: common,
     components: {
-      Vditor
+      Editor
     },
     data() {
       return {
         model: 'setting/agreement',
         upload_headers:{},
-        contentEditor: '',
         dataForm:
         {
           id: 0,
@@ -69,7 +67,7 @@
         }).then(({data}) => {
           if (data && data.status === 200) {
             this.dataForm.name = data.data.name
-            this.contentEditor.setValue(data.data.content)
+            this.dataForm.content     = data.data.content
           }
         })
       },
@@ -83,7 +81,7 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'name': this.dataForm.name,
-                'content': this.contentEditor.getValue(),
+                'content': this.$refs.editor.content,
               })
             }).then(({data}) => {
               if (data && data.status === 200) {
@@ -96,29 +94,10 @@
           }
         })
       },
-      initContentVditor () {
-        this.contentEditor = new Vditor("content",{
-          multiple: false,
-          height: 400,
-          "mode": "sv",
-          "preview": {
-            "mode": "both"
-          },
-          toolbarConfig:{
-            pin:true
-          },
-          cache:{
-            enable:false
-          }
-        })
-      },
     },
     created(request)
     {
       this.init();
-    },
-    mounted () {
-      this.initContentVditor();
     },
   };
 </script>

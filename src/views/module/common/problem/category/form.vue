@@ -3,7 +3,7 @@
     <div class="admin_main_block">
       <div class="admin_main_block_top">
         <div class="admin_main_block_left">
-          <div>{{ $t('course.unlock.from') }}</div>
+          <div>{{ $t('problem.category.from') }}</div>
         </div>
 
         <div class="admin_main_block_right">
@@ -16,24 +16,20 @@
       </div>
 
       <div class="admin_form_main">
-        <el-form label-width="120px" ref="dataForm" :model="dataForm" :rules="dataRule">
-
-          <el-form-item :label="$t('course.unlock.section')" prop="section">
-            <el-input-number :placeholder="$t('common.please_input') + $t('course.unlock.section')" :min="1" v-model="dataForm.section"></el-input-number>
-          </el-form-item>
-
-          <el-form-item :label="$t('course.unlock.duration')" prop="duration">
-            <el-input-number :placeholder="$t('common.please_input') + $t('course.unlock.duration')" :min="1" v-model="dataForm.duration"></el-input-number>
+        <el-form label-width="140px" ref="dataForm" :model="dataForm" :rules="dataRule">
+          <el-form-item :label="$t('problem.category.title')" prop="title">
+            <el-input :placeholder="$t('problem.category.title')" v-model="dataForm.title"></el-input>
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="dataFormSubmit()">
+            <el-button v-if="isAuth('module:common:problem:category:handle')" type="primary" @click="dataFormSubmit()">
               {{ $t('common.confirm') }}
             </el-button>
             <el-button @click="resetForm()">
               {{ $t('common.reset') }}
             </el-button>
           </el-form-item>
+
         </el-form>
       </div>
     </div>
@@ -42,24 +38,23 @@
 
 <script>
   import common from '@/views/common/base'
-  export default {
+  export default
+  {
     extends: common,
-    data() {
+    data()
+    {
       return {
-        model: 'education/course/unlock',
+        model: 'common/problem/category',
+        courseList: [],
         dataForm:
         {
           id: 0,
-          section: 1,
-          duration: 1
+          title: '',
         },
         dataRule:
         {
-          section: [
-            { required: true, message: this.$t('course.unlock.rules.section.require'), trigger: 'blur' },
-          ],
-          duration: [
-            { required: true, message: this.$t('course.unlock.rules.duration.require'), trigger: 'blur' },
+          title: [
+            { required: true, message: this.$t('/problem.category.rules.title.require'), trigger: 'blur' },
           ]
         }
       };
@@ -76,29 +71,27 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/education/course/unlock/view/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/common/problem/category/view/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
-                this.dataForm.section  = data.data.section
-                this.dataForm.duration = data.data.duration
+                this.dataForm.title     = data.data.title
               }
             })
           }
         })
       },
       // 表单提交
-      dataFormSubmit () {
+      dataFormSubmit () {console.log(1);
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/education/course/unlock/handle`),
+              url: this.$http.adornUrl(`/common/problem/category/handle`),
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
-                'section': this.dataForm.section,
-                'duration': this.dataForm.duration
+                'title': this.dataForm.title,
               })
             }).then(({data}) => {
               if (data && data.status === 200) {
@@ -111,12 +104,13 @@
           }
         })
       },
-      resetForm: function()
+      resetForm:function()
       {
         this.$refs['dataForm'].resetFields();
       }
     },
-    created() {
+    created(request)
+    {
       this.init();
     }
   };

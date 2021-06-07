@@ -14,5 +14,20 @@ export const problem = {
     content: {
       require: '常见问题答案不能为空',
     }
-  }
+  },
+
+
+
+  // 常见问题分类
+  category: {
+    list: '常见问题分类列表',
+    from: '常见问题分类操作',
+    title: '常见问题分类标题',
+
+    rules: {
+      title: {
+        require: '常见问题分类标题不能为空',
+      }
+    },
+  },
 }

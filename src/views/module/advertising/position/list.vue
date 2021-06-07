@@ -32,26 +32,6 @@
           <el-table-column prop="title" :label="$t('advertising.position.title')">
           </el-table-column>
 
-          <el-table-column prop="width" :label="$t('advertising.position.width')">
-            <template slot-scope="scope">
-              {{ scope.row.width }} px
-            </template>
-          </el-table-column>
-
-          <el-table-column prop="height" :label="$t('advertising.position.height')">
-            <template slot-scope="scope">
-              {{ scope.row.height }} px
-            </template>
-          </el-table-column>
-
-          <el-table-column prop="is_open" :label="$t('advertising.position.is_open')">
-            <template slot-scope="scope">
-              <el-tag effect="dark" :type=" scope.row.is_open.value == 1 ? 'success' : 'danger' ">
-                {{ scope.row.is_open.text }}
-              </el-tag>
-            </template>
-          </el-table-column>
-
           <el-table-column prop="create_time" :label="$t('common.create_time')">
           </el-table-column>
 
@@ -65,7 +45,7 @@
                 {{ $t('advertising.view') }}
               </el-button>
 
-              <el-button v-if="isAuth('module:advertising:form') && scope.row.is_open.value == 1" type="success" icon="el-icon-plus" @click="$router.push({name: 'module_advertising_form', query: {position_id: scope.row.id}})" >
+              <el-button v-if="isAuth('module:advertising:form')" type="success" icon="el-icon-plus" @click="$router.push({name: 'module_advertising_form', query: {position_id: scope.row.id}})" >
                 {{ $t('advertising.create') }}
               </el-button>
 

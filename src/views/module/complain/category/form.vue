@@ -21,6 +21,10 @@
             <el-input :placeholder="$t('complain.category.title')" v-model="dataForm.title"></el-input>
           </el-form-item>
 
+          <el-form-item :label="$t('common.sort')" prop="sort">
+            <el-input-number :placeholder="$t('common.please_input')+$t('common.sort')" v-model="dataForm.sort"></el-input-number>
+          </el-form-item>
+
           <el-form-item>
             <el-button v-if="isAuth('module:complain:category:handle')" type="primary" @click="dataFormSubmit()">
               {{ $t('common.confirm') }}
@@ -50,6 +54,7 @@
         {
           id: 0,
           title: '',
+          sort: 0,
         },
         dataRule:
         {
@@ -76,7 +81,8 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
-                this.dataForm.title     = data.data.title
+                this.dataForm.title = data.data.title
+                this.dataForm.sort  = data.data.sort
               }
             })
           }
@@ -92,6 +98,7 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'title': this.dataForm.title,
+                'sort': this.dataForm.sort,
               })
             }).then(({data}) => {
               if (data && data.status === 200) {
