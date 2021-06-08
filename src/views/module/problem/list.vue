@@ -4,21 +4,21 @@
       <div class="admin_main_block_top">
         <div class="admin_main_block_left">
           <div>
-            <router-link :to="{name: 'module_common_problem_form'}">
-              <el-button v-if="isAuth('module:common:problem:form')" type="success" icon="el-icon-plus">
+            <router-link :to="{name: 'module_problem_form'}">
+              <el-button v-if="isAuth('module:problem:form')" type="success" icon="el-icon-plus">
                 {{ $t('common.create') }}
               </el-button>
             </router-link>
           </div>
           <div>
-            <el-button v-if="isAuth('module:common:problem:category:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_common_problem_category_list'})">
+            <el-button v-if="isAuth('module:problem:category:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_problem_category_list'})">
               {{ $t('problem.category.list') }}
             </el-button>
           </div>
         </div>
         <div class="admin_main_block_right">
           <div>
-            <el-button v-if="isAuth('module:common:problem:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle()">
+            <el-button v-if="isAuth('module:problem:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle()">
               {{ $t('common.batch_delete') }}
             </el-button>
           </div>
@@ -63,11 +63,11 @@
 
           <el-table-column :label="$t('common.handle')" fixed="right" width="220">
             <template slot-scope="scope">
-              <el-button v-if="isAuth('module:common:problem:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_common_problem_form', query: {id : scope.row.id}})">
+              <el-button v-if="isAuth('module:problem:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_problem_form', query: {id : scope.row.id}})">
                 {{ $t('common.update') }}
               </el-button>
 
-              <el-button v-if="isAuth('module:common:problem:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
+              <el-button v-if="isAuth('module:problem:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
                 {{ $t('common.delete') }}
               </el-button>
             </template>
@@ -95,7 +95,7 @@
     extends: common,
     data() {
       return {
-        model: 'common/problem',
+        model: 'problem',
         dataForm: [
           'title'
         ]

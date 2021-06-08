@@ -4,7 +4,7 @@
       <div class="admin_main_block_top">
         <div class="admin_main_block_left">
           <div>
-            {{ $t('config.agreement.user') }}
+            {{ $t('config.agreement.employ') }}
           </div>
         </div>
       </div>
@@ -21,7 +21,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button v-if="isAuth('setting:agreement')" type="primary" @click="dataFormSubmit()">
+            <el-button v-if="isAuth('setting:employ')" type="primary" @click="dataFormSubmit()">
               {{ $t('common.confirm') }}
             </el-button>
           </el-form-item>
@@ -41,7 +41,7 @@
     },
     data() {
       return {
-        model: 'setting/agreement',
+        model: 'setting/employ',
         upload_headers:{},
         dataForm:
         {
@@ -61,7 +61,7 @@
       init ()
       {
         this.$http({
-          url: this.$http.adornUrl(`/setting/agreement`),
+          url: this.$http.adornUrl(`/setting/employ`),
           method: 'get',
           params: this.$http.adornParams()
         }).then(({data}) => {
@@ -76,7 +76,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/setting/agreement`),
+              url: this.$http.adornUrl(`/setting/employ`),
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,

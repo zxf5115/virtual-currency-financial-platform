@@ -2,24 +2,24 @@
   <div class="qingwu">
     <div class="admin_main_block">
       <div class="admin_main_block_top">
-        <div class="admin_main_block_left">
-          <div>
-            <router-link :to="{name: 'module_common_problem_category_form'}">
-              <el-button v-if="isAuth('module:common:problem:category:form')" type="success" icon="el-icon-plus">
-                {{ $t('common.create') }}
-              </el-button>
-            </router-link>
-          </div>
-        </div>
         <div class="admin_main_block_right">
           <div>
-            <el-button v-if="isAuth('module:common:problem:category:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle()">
+            <el-button v-if="isAuth('module:contact:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle()">
               {{ $t('common.batch_delete') }}
             </el-button>
           </div>
-          <div class="mr10">
-            <el-button icon="el-icon-back" @click="$router.push({name: 'module_common_problem_list'})">
-              {{ $t('common.return') }}
+        </div>
+      </div>
+
+      <div class="admin_main_block_top">
+        <div class="admin_main_block_left">
+          <div>
+            <el-input v-model="dataForm.name" :placeholder="$t('common.please_input') + $t('contact.name')" clearable>
+            </el-input>
+          </div>
+          <div>
+            <el-button icon="el-icon-search" @click="getDataList()">
+              {{ $t('common.search') }}
             </el-button>
           </div>
         </div>
@@ -27,26 +27,30 @@
 
       <div class="admin_table_main">
         <el-table :data="dataList" v-loading="dataListLoading" @selection-change="selectionChangeHandle">
-
           <el-table-column type="selection" header-align="center" align="center">
           </el-table-column>
 
-          <el-table-column prop="id" label="#" width="70px">
+          <el-table-column prop="id" label="#"  width="70px">
           </el-table-column>
 
-          <el-table-column prop="title" :label="$t('problem.category.title')">
+          <el-table-column prop="title" :label="$t('contact.title')">
+          </el-table-column>
+
+          <el-table-column prop="content" :label="$t('contact.content')">
+          </el-table-column>
+
+          <el-table-column prop="name" :label="$t('contact.name')">
+          </el-table-column>
+
+          <el-table-column prop="email" :label="$t('contact.email')">
           </el-table-column>
 
           <el-table-column prop="create_time" :label="$t('common.create_time')">
           </el-table-column>
 
-          <el-table-column :label="$t('common.handle')" fixed="right" width="200">
+          <el-table-column :label="$t('common.handle')" fixed="right" width="240">
             <template slot-scope="scope">
-              <el-button v-if="isAuth('module:common:problem:category:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_common_problem_category_form', query: {id : scope.row.id}})">
-                {{ $t('common.update') }}
-              </el-button>
-
-              <el-button v-if="isAuth('module:common:problem:category:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
+              <el-button v-if="isAuth('module:contact:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
                 {{ $t('common.delete') }}
               </el-button>
             </template>
@@ -74,8 +78,10 @@
     extends: common,
     data() {
       return {
-        model: 'common/problem/category',
-        dataForm: []
+        model: 'contact',
+        dataForm: [
+          'name'
+        ]
       };
     },
     created() {

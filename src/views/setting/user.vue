@@ -3,32 +3,26 @@
     <div class="admin_main_block">
       <div class="admin_main_block_top">
         <div class="admin_main_block_left">
-          <div>{{ $t('teacher.money.view') }}</div>
-        </div>
-
-        <div class="admin_main_block_right">
           <div>
-            <el-button icon="el-icon-back" @click="$router.push({name: 'module_teacher_recruitment_view', query: {id: dataForm.money_id}})">
-              {{ $t('common.return') }}
-            </el-button>
+            {{ $t('config.agreement.user') }}
           </div>
         </div>
       </div>
 
       <div class="admin_form_main">
-        <el-form label-width="100px" ref="dataForm" :model="dataForm" :rules="dataRule">
+        <el-form label-width="120px" ref="dataForm" :model="dataForm" :rules="dataRule">
 
-          <el-form-item :label="$t('teacher.money.money')">
-            {{ dataForm.money }}
+          <el-form-item :label="$t('config.agreement.name')" prop="name">
+            <el-input v-model="dataForm.name" :placeholder="$t('common.please_input')+$t('config.agreement.name')"></el-input>
           </el-form-item>
 
-          <el-form-item :label="$t('teacher.money.type')">
-            {{ dataForm.type }}
+          <el-form-item class="mavon" prop="content" :label="$t('config.agreement.content')">
+            <editor ref="editor" :value="dataForm.content"></editor>
           </el-form-item>
 
           <el-form-item>
-            <el-button v-if="isAuth('module:teacher:recruitment:money:handle')" type="primary" @click="dataFormSubmit()">
-              {{ $t('teacher.settlement') }}
+            <el-button v-if="isAuth('setting:user')" type="primary" @click="dataFormSubmit()">
+              {{ $t('common.confirm') }}
             </el-button>
           </el-form-item>
         </el-form>
@@ -39,38 +33,41 @@
 
 <script>
   import common from '@/views/common/base'
-  import formArea from '@/views/common/component/form-area'
+  import Editor from "@/components/form/editor"
   export default {
     extends: common,
     components: {
-      formArea
+      Editor
     },
     data() {
       return {
-        model: 'teacher/recruitment/money/extract',
+        model: 'setting/user',
+        upload_headers:{},
         dataForm:
         {
           id: 0,
-          money_id: 0,
-          money: '',
-          type: ''
+          name: '',
+          content : '',
         },
-        dataRule: {}
+        dataRule:
+        {
+          name: [
+            { required: true, message: this.$t('config.agreement.rules.name.require'), trigger: 'blur' },
+          ]
+        }
       };
     },
     methods: {
       init ()
       {
-        this.dataForm.money_id = this.$route.query.money_id
-
         this.$http({
-          url: this.$http.adornUrl(`/teacher/recruitment/money/view/${this.dataForm.money_id}`),
+          url: this.$http.adornUrl(`/setting/user`),
           method: 'get',
           params: this.$http.adornParams()
         }).then(({data}) => {
           if (data && data.status === 200) {
-            this.dataForm.money = data.data.wait_money
-            this.dataForm.type  = '线下结算'
+            this.dataForm.name = data.data.name
+            this.dataForm.content     = data.data.content
           }
         })
       },
@@ -79,10 +76,12 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/teacher/recruitment/money/handle`),
+              url: this.$http.adornUrl(`/setting/user`),
               method: 'post',
               data: this.$http.adornData({
-                'id': this.dataForm.money_id
+                'id': this.dataForm.id || undefined,
+                'name': this.dataForm.name,
+                'content': this.$refs.editor.content,
               })
             }).then(({data}) => {
               if (data && data.status === 200) {
@@ -94,10 +93,16 @@
             })
           }
         })
-      }
+      },
     },
-    created() {
+    created(request)
+    {
       this.init();
-    }
+    },
   };
 </script>
+<style lang="scss" scoped>
+  .mavon {
+    width: 95% !important;
+  }
+</style>

@@ -36,6 +36,8 @@ import  {financial}  from './module/platform/financial/zh'
 
 import  {problem}  from './module/platform/common/problem/zh'
 
+import  {contact}  from './module/platform/contact/zh'
+
 export default {
 
   // 公共
@@ -148,5 +150,10 @@ export default {
   // 常见问题
   problem: {
     ...problem
+  },
+
+  // 联系客服
+  contact: {
+    ...contact
   }
 }
