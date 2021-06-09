@@ -67,7 +67,7 @@
             'status': 1
           })
         }).then(({data}) => {
-          if (data && data.status === 200) {
+          if (data && data.status === 200) {console.log(data.data.data)
             this.dataList = data.data.data
             this.totalPage = data.data.total
           } else {

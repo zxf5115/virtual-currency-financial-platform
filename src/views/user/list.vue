@@ -69,10 +69,8 @@
           </el-table-column>
 
           <el-table-column :label="$t('user.role.title')">
-            <template slot-scope="scope">
-              <span class="user_list_roles">
-                <el-tag v-for="(v,k) in scope.row.role" :key="k">{{v.title}}</el-tag>
-              </span>
+            <template slot-scope="scope" v-if="scope.row.role">
+              {{ scope.row.role.title }}
             </template>
           </el-table-column>
 

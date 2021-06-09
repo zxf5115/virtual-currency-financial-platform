@@ -9,12 +9,12 @@
       <el-tag type="danger">123456</el-tag>
     </el-form-item>
 
-    <el-form-item prop="role_id" :label="$t('user.role.title')" class="width_auto">
-      <el-checkbox-group v-model="dataForm.role_id" :max=1>
-        <el-checkbox v-for="(v,k) in rolelist" :key="k" :label="v.id">
+    <el-form-item prop="role_id" :label="$t('user.role.title')">
+      <el-radio-group v-model="dataForm.role_id">
+        <el-radio v-for="(v,k) in rolelist" :key="k" :label="v.id">
           {{v.title}}
-        </el-checkbox>
-      </el-checkbox-group>
+        </el-radio>
+      </el-radio-group>
     </el-form-item>
 
     <el-form-item :label="$t('user.nickname')" prop="nickname">
@@ -59,7 +59,7 @@
         dataForm:
         {
           id: 0,
-          role_id : [],
+          role_id : '',
           username: '',
           nickname: '',
           avatar: '',
@@ -98,20 +98,12 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
+                this.dataForm.role_id  = data.data.role_id
                 this.dataForm.username = data.data.username
                 this.dataForm.nickname = data.data.nickname
                 this.dataForm.avatar   = data.data.avatar
                 this.dataForm.mobile   = data.data.mobile
                 this.dataForm.email    = data.data.email
-
-                if(data.data.role)
-                {
-                  let role = data.data.role
-
-                  role.forEach(res=>{
-                    this.dataForm.role_id.push(res.id);
-                  });
-                }
               }
             })
           }
@@ -159,24 +151,6 @@
       resetForm:function()
       {
         this.$refs['dataForm'].resetFields();
-      },
-      handleAvatarSuccess(res, file) {
-        this.dataForm.avatar = res.data;
-      },
-      beforeAvatarUpload(file) {
-        const isPicture = (file.type === 'image/jpeg' || file.type === 'image/png');
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isPicture) {
-          var message = this.$t('common.rules.picture.picture_type');
-          this.$message.error(this.$t(data.message))
-        }
-        if (!isLt2M) {
-          var message = this.$t('common.rules.picture.picture_size');
-          this.$message.error(this.$t(data.message))
-        }
-
-        return isPicture && isLt2M;
       },
     },
     created() {
