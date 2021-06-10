@@ -199,3 +199,14 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,
 .mr10 {
     margin-right: 10px;
 }
+
+
+
+
+/*富文本编辑破解*/
+/*.fr-wrapper > div[style*='z-index: 9999'] {
+display: none !important;
+}
+.fr-placeholder {
+    margin-top: 0px !important;
+}*/

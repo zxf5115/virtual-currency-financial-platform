@@ -3,7 +3,7 @@
     <div class="admin_main_block">
       <div class="admin_main_block_top">
         <div class="admin_main_block_left">
-          <div>{{ $t('problem.from') }}</div>
+          <div>{{ $t('flash.from') }}</div>
         </div>
 
         <div class="admin_main_block_right">
@@ -18,22 +18,22 @@
       <div class="admin_form_main">
         <el-form label-width="140px" ref="dataForm" :model="dataForm" :rules="dataRule">
 
-          <el-form-item :label="$t('problem.category.title')" prop="category_id">
-            <el-select v-model="dataForm.category_id" :placeholder="$t('common.please_select')+$t('problem.category.title')">
+          <el-form-item :label="$t('flash.category.title')" prop="category_id">
+            <el-select v-model="dataForm.category_id" :placeholder="$t('common.please_select')+$t('flash.category.title')">
               <el-option v-for="(v,k) in categoryList" :label="v.title" :key="k" :value="v.id"></el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item :label="$t('problem.title')" prop="title">
-            <el-input :placeholder="$t('problem.title')" v-model="dataForm.title"></el-input>
+          <el-form-item :label="$t('flash.title')" prop="title">
+            <el-input :placeholder="$t('flash.title')" v-model="dataForm.title"></el-input>
           </el-form-item>
 
-          <el-form-item class="mavon" prop="content" :label="$t('problem.content')">
+          <el-form-item class="mavon" prop="content" :label="$t('flash.content')">
             <editor ref="editor" :value="dataForm.content"></editor>
           </el-form-item>
 
           <el-form-item>
-            <el-button v-if="isAuth('module:problem:handle')" type="primary" @click="dataFormSubmit()">
+            <el-button v-if="isAuth('module:flash:handle')" type="primary" @click="dataFormSubmit()">
               {{ $t('common.confirm') }}
             </el-button>
             <el-button @click="resetForm()">
@@ -58,7 +58,7 @@
     data()
     {
       return {
-        model: 'problem',
+        model: 'flash',
         categoryList: [],
         dataForm:
         {
@@ -70,7 +70,7 @@
         dataRule:
         {
           title: [
-            { required: true, message: this.$t('problem.rules.title.require'), trigger: 'blur' },
+            { required: true, message: this.$t('flash.rules.title.require'), trigger: 'blur' },
           ]
         }
       };
@@ -87,7 +87,7 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/problem/view/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/flash/view/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
@@ -105,7 +105,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/problem/handle`),
+              url: this.$http.adornUrl(`/flash/handle`),
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
@@ -130,7 +130,7 @@
       },
       loadCategoryList () {
         this.$http({
-          url: this.$http.adornUrl('/problem/category/select'),
+          url: this.$http.adornUrl('/flash/category/select'),
           method: 'get'
         }).then(({data}) => {
           if (data && data.status === 200) {

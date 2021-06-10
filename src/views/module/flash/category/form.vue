@@ -3,7 +3,7 @@
     <div class="admin_main_block">
       <div class="admin_main_block_top">
         <div class="admin_main_block_left">
-          <div>{{ $t('problem.from') }}</div>
+          <div>{{ $t('flash.category.from') }}</div>
         </div>
 
         <div class="admin_main_block_right">
@@ -17,23 +17,16 @@
 
       <div class="admin_form_main">
         <el-form label-width="140px" ref="dataForm" :model="dataForm" :rules="dataRule">
-
-          <el-form-item :label="$t('problem.category.title')" prop="category_id">
-            <el-select v-model="dataForm.category_id" :placeholder="$t('common.please_select')+$t('problem.category.title')">
-              <el-option v-for="(v,k) in categoryList" :label="v.title" :key="k" :value="v.id"></el-option>
-            </el-select>
+          <el-form-item :label="$t('flash.category.title')" prop="title">
+            <el-input :placeholder="$t('flash.category.title')" v-model="dataForm.title"></el-input>
           </el-form-item>
 
-          <el-form-item :label="$t('problem.title')" prop="title">
-            <el-input :placeholder="$t('problem.title')" v-model="dataForm.title"></el-input>
-          </el-form-item>
-
-          <el-form-item class="mavon" prop="content" :label="$t('problem.content')">
-            <editor ref="editor" :value="dataForm.content"></editor>
+          <el-form-item :label="$t('common.sort')" prop="sort">
+            <el-input-number :placeholder="$t('common.please_input')+$t('common.sort')" v-model="dataForm.sort"></el-input-number>
           </el-form-item>
 
           <el-form-item>
-            <el-button v-if="isAuth('module:problem:handle')" type="primary" @click="dataFormSubmit()">
+            <el-button v-if="isAuth('module:flash:category:handle')" type="primary" @click="dataFormSubmit()">
               {{ $t('common.confirm') }}
             </el-button>
             <el-button @click="resetForm()">
@@ -49,28 +42,24 @@
 
 <script>
   import common from '@/views/common/base'
-  import Editor from "@/components/form/editor"
-  export default {
+  export default
+  {
     extends: common,
-    components: {
-      Editor
-    },
     data()
     {
       return {
-        model: 'problem',
-        categoryList: [],
+        model: 'flash/category',
+        courseList: [],
         dataForm:
         {
           id: 0,
-          category_id: '',
           title: '',
-          content: '',
+          sort: 0,
         },
         dataRule:
         {
           title: [
-            { required: true, message: this.$t('problem.rules.title.require'), trigger: 'blur' },
+            { required: true, message: this.$t('flash.category.rules.title.require'), trigger: 'blur' },
           ]
         }
       };
@@ -87,31 +76,29 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/problem/view/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/flash/category/view/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
-                this.dataForm.category_id = data.data.category_id
-                this.dataForm.title       = data.data.title
-                this.dataForm.content     = data.data.content
+                this.dataForm.title     = data.data.title
+                this.dataForm.sort  = data.data.sort
               }
             })
           }
         })
       },
       // 表单提交
-      dataFormSubmit () {console.log(1);
+      dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/problem/handle`),
+              url: this.$http.adornUrl(`/flash/category/handle`),
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
-                'category_id': this.dataForm.category_id,
                 'title': this.dataForm.title,
-                'content': this.$refs.editor.content,
+                'sort': this.dataForm.sort,
               })
             }).then(({data}) => {
               if (data && data.status === 200) {
@@ -127,30 +114,11 @@
       resetForm:function()
       {
         this.$refs['dataForm'].resetFields();
-      },
-      loadCategoryList () {
-        this.$http({
-          url: this.$http.adornUrl('/problem/category/select'),
-          method: 'get'
-        }).then(({data}) => {
-          if (data && data.status === 200) {
-            this.categoryList = data.data
-          } else {
-            this.$message.error(this.$t(data.message))
-          }
-        })
-      },
+      }
     },
     created(request)
     {
       this.init();
-
-      this.loadCategoryList();
-    },
+    }
   };
 </script>
-<style lang="scss" scoped>
-  .mavon {
-    width: 95% !important;
-  }
-</style>
