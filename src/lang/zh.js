@@ -25,6 +25,8 @@ import  {order}  from './module/platform/order/zh'
 
 import  {complain}  from './module/platform/complain/zh'
 
+import  {notice}  from './module/platform/notice/zh'
+
 import  {financial}  from './module/platform/financial/zh'
 
 import  {problem}  from './module/platform/common/problem/zh'
@@ -110,6 +112,11 @@ export default {
   // 投诉
   complain: {
     ...complain
+  },
+
+  // 通知
+  notice: {
+    ...notice
   },
 
   // 财务
