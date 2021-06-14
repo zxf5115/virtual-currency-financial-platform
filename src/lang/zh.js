@@ -35,6 +35,8 @@ import  {contact}  from './module/platform/contact/zh'
 
 import  {flash}  from './module/platform/flash/zh'
 
+import  {information}  from './module/platform/information/zh'
+
 export default {
 
   // 公共
@@ -137,5 +139,10 @@ export default {
   // 快讯
   flash: {
     ...flash
+  },
+
+  // 资讯
+  information: {
+    ...information
   }
 }
