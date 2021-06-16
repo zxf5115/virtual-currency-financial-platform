@@ -34,6 +34,16 @@
             <el-input :placeholder="$t('information.title')" v-model="dataForm.title"></el-input>
           </el-form-item>
 
+          <el-form-item :label="$t('information.picture')" prop="picture">
+            <el-upload class="avatar-uploader" :action="this.$http.adornUrl('/file/picture')" :show-file-list="false" :headers="upload_headers" :on-success="handlePictureSuccess" :before-upload="beforePictureUpload">
+              <img v-if="dataForm.picture" :src="dataForm.picture" class="avatar-upload">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+            <div class="red">
+              上传图片分辨率为：355*170
+            </div>
+          </el-form-item>
+
           <el-form-item class="mavon" prop="content" :label="$t('information.content')">
             <editor ref="editor" :value="dataForm.content"></editor>
           </el-form-item>
@@ -79,12 +89,14 @@
         model: 'information',
         categoryList: [],
         labelList: [],
+        upload_headers:{},
         dataForm:
         {
           id: 0,
           category_id: '',
           label_id: [],
           title: '',
+          picture: '',
           content: '',
           source: '',
           author: '',
@@ -92,9 +104,15 @@
         },
         dataRule:
         {
+          category_id: [
+            { required: true, message: this.$t('information.rules.category_id.require'), trigger: 'blur' },
+          ],
           title: [
             { required: true, message: this.$t('information.rules.title.require'), trigger: 'blur' },
-          ]
+          ],
+          content: [
+            { required: true, message: this.$t('information.rules.content.require'), trigger: 'blur' },
+          ],
         }
       };
     },
@@ -117,6 +135,7 @@
               if (data && data.status === 200) {
                 this.dataForm.category_id = data.data.category_id
                 this.dataForm.title       = data.data.title
+                this.dataForm.picture     = data.data.picture
                 this.dataForm.content     = data.data.content
                 this.dataForm.source      = data.data.source
                 this.dataForm.author      = data.data.author
@@ -148,6 +167,7 @@
                 'category_id': this.dataForm.category_id,
                 'label_id': this.dataForm.label_id,
                 'title': this.dataForm.title,
+                'picture': this.dataForm.picture,
                 'content': this.$refs.editor.content,
                 'source': this.dataForm.source,
                 'author': this.dataForm.author,
@@ -196,6 +216,9 @@
     created(request)
     {
       this.init();
+
+      // 要保证取到
+      this.upload_headers.Authorization = 'Bearer ' + localStorage.getItem('token');
 
       this.loadCategoryList();
       this.loadLabelList();

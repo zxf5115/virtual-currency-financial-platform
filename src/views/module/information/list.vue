@@ -76,10 +76,19 @@
           <el-table-column prop="create_time" :label="$t('common.create_time')" width="150">
           </el-table-column>
 
-          <el-table-column :label="$t('common.handle')" fixed="right" width="220">
+          <el-table-column :label="$t('common.handle')" fixed="right" width="300">
             <template slot-scope="scope">
               <el-button v-if="isAuth('module:information:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_information_form', query: {id : scope.row.id}})">
                 {{ $t('common.update') }}
+              </el-button>
+
+              <el-button v-if="isAuth('module:information:recommend')" :type="scope.row.is_recommend.value == 0 ? 'danger' : 'success'" :icon="scope.row.is_recommend.value == 1 ? 'el-icon-check' : 'el-icon-close'" @click="enableHandle(scope.row.id, scope.row.is_recommend.value)">
+                <span v-if="scope.row.is_recommend.value == 1">
+                  {{ $t('information.enable') }}
+                </span>
+                <span v-else>
+                  {{ $t('information.disable') }}
+                </span>
               </el-button>
 
               <el-button v-if="isAuth('module:information:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
@@ -132,6 +141,40 @@
           }
         })
       },
+      // 停用（启用）课程类型
+      enableHandle (id, status) {
+        let message = '您确定要推荐当前资讯？'
+
+        if(1 == status)
+        {
+          message = '您确定要取消推荐当前资讯？'
+        }
+
+        this.$confirm(message, this.$t('common.prompt'), {
+          confirmButtonText: this.$t('common.confirm'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning'
+        }).then(() => {
+          this.$http({
+            url: this.$http.adornUrl('/'+this.model+'/recommend'),
+            method: 'post',
+            data: {id: id}
+          }).then(({data}) => {
+            if (data && data.status === 200) {
+              this.$message({
+                message: this.$t('common.handle_success'),
+                type: 'success',
+                duration: 1500,
+                onClose: () => {
+                  this.getDataList()
+                }
+              })
+            } else {
+              this.$message.error(this.$t(data.message))
+            }
+          })
+        }).catch(() => {})
+      }
     },
     mounted () {
       this.loadCategoryList();
