@@ -31,6 +31,8 @@ import  {financial}  from './module/platform/financial/zh'
 
 import  {problem}  from './module/platform/common/problem/zh'
 
+import  {project}  from './module/platform/common/project/zh'
+
 import  {contact}  from './module/platform/contact/zh'
 
 import  {flash}  from './module/platform/flash/zh'
@@ -129,6 +131,11 @@ export default {
   // 常见问题
   problem: {
     ...problem
+  },
+
+  // 项目
+  project: {
+    ...project
   },
 
   // 联系客服
