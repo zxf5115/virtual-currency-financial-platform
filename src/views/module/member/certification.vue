@@ -66,7 +66,7 @@
               <el-row>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.personal.id_card_front_picture')" label-width="150">
-                    <span v-if="dataForm.data">
+                    <span>
                       <el-image :src="dataForm.data.id_card_front_picture">
                         <div slot="error" class="image-slot">
                           <i class="el-icon-picture-outline"></i>
@@ -77,7 +77,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.personal.id_card_behind_picture')" label-width="150">
-                    <span v-if="dataForm.data">
+                    <span>
                       <el-image :src="dataForm.data.id_card_behind_picture">
                         <div slot="error" class="image-slot">
                           <i class="el-icon-picture-outline"></i>
@@ -100,21 +100,21 @@
               <el-row>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.company.company_name')" label-width="100">
-                    <span v-if="dataForm.data">
+                    <span>
                       {{ dataForm.data.company_name }}
                     </span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.company.business_license_no')" label-width="100">
-                    <span v-if="dataForm.data">
+                    <span>
                       {{ dataForm.data.business_license_no }}
                     </span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.company.business_license_picture')" label-width="100">
-                    <span v-if="dataForm.data">
+                    <span>
                       <el-image :src="dataForm.data.business_license_picture">
                         <div slot="error" class="image-slot">
                           <i class="el-icon-picture-outline"></i>
@@ -137,14 +137,14 @@
               <el-row>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.project.project_name')" label-width="100">
-                    <span v-if="dataForm.data">
+                    <span>
                       {{ dataForm.data.project_name }}
                     </span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.project.project_logo')" label-width="100">
-                    <span v-if="dataForm.data">
+                    <span>
                       <el-image :src="dataForm.data.project_logo">
                         <div slot="error" class="image-slot">
                           <i class="el-icon-picture-outline"></i>
@@ -155,14 +155,14 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.project.realname')" label-width="100">
-                    <span v-if="dataForm.data">
+                    <span>
                       {{ dataForm.data.realname }}
                     </span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.project.mobile')" label-width="100">
-                    <span v-if="dataForm.data">
+                    <span>
                       {{ dataForm.data.mobile }}
                     </span>
                   </el-form-item>
@@ -171,28 +171,28 @@
               <el-row>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.project.project_category')" label-width="100">
-                    <span v-if="dataForm.data">
-                      <!-- {{ dataForm.data.project_category }} -->
+                    <span>
+                      {{ dataForm.data.project_category }}
                     </span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.project.project_website')" label-width="100">
-                    <span v-if="dataForm.data">
+                    <span>
                       {{ dataForm.data.project_website }}
                     </span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.project.project_document')" label-width="100">
-                    <span v-if="dataForm.data">
+                    <span>
                       {{ dataForm.data.project_document }}
                     </span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.project.project_social')" label-width="100">
-                    <span v-if="dataForm.data">
+                    <span>
                       {{ dataForm.data.project_social }}
                     </span>
                   </el-form-item>
@@ -201,14 +201,14 @@
               <el-row>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.project.project_report')" label-width="100">
-                    <span v-if="dataForm.data">
+                    <span>
                       {{ dataForm.data.project_report }}
                     </span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.project.project_github')" label-width="100">
-                    <span v-if="dataForm.data">
+                    <span>
                       {{ dataForm.data.project_github }}
                     </span>
                   </el-form-item>
@@ -265,8 +265,14 @@
         dataForm:
         {
           id: 0,
+          avatar: '',
+          username: '',
+          nickname: '',
+          create_time: '',
+
           certification: {
             id: 0,
+            type: 1,
             certification_status: '1',
             certification_content: '',
           },
@@ -307,21 +313,26 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
-                this.dataForm   = data.data
+                this.dataForm.id          = data.data.id
+                this.dataForm.avatar      = data.data.avatar
+                this.dataForm.create_time = data.data.create_time
+                this.dataForm.username    = data.data.username
+                this.dataForm.nickname    = data.data.nickname
 
-                if(this.dataForm.certification)
+                this.dataForm.certification.id = data.data.certification.id || ''
+                this.dataForm.certification.type = data.data.certification.type.value || ''
+                this.dataForm.certification.certification_status = data.data.certification.certification_status.value + '' || ''
+                this.dataForm.certification.certification_content = data.data.certification.certification_content || ''
+
+                if(1 == this.dataForm.certification.certification_status)
                 {
-                  this.dataForm.certification.id = this.dataForm.certification.id
-                  this.dataForm.certification.certification_status = this.dataForm.certification.certification_status.value + ''
-                  this.dataForm.certification.certification_content = this.dataForm.certification.certification_content
-
-                  if(1 == this.dataForm.certification.certification_status)
-                  {
-                    this.certification = 'box-card mt10 display'
-                  }
+                  this.certification = 'box-card mt10 display'
+                }
 
 
-                  let type = this.dataForm.certification.type['value']
+                if(this.dataForm.certification.type)
+                {
+                  let type = this.dataForm.certification.type
 
                   if(1 == type)
                   {
@@ -345,16 +356,15 @@
                     this.project = 'box-card mt10 display'
                   }
                 }
-
               }
             }).then(() => {
-              if (this.dataForm.id && this.dataForm.certification) {
+              if (this.dataForm.id && this.dataForm.certification.type) {
                 this.$http({
                   url: this.$http.adornUrl(`/member/certification/data`),
                   method: 'get',
                   params: this.$http.adornParams({
                     id: this.dataForm.id,
-                    type: this.dataForm.certification.type['value']
+                    type: this.dataForm.certification.type
                   })
                 }).then(({data}) => {
                   if (data && data.status === 200) {
