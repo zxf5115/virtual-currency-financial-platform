@@ -34,14 +34,14 @@ export const common =  {
   audit: '审核',
   batch_audit: '批量审核',
   audit_finish: '审核完成',
-
-  certification_status: '认证状态',
   audit_status: '审核状态',
   wait_pass: '待审核',
   pass: '审核通过',
   no_pass: '审核拒绝',
   content: '审核备注',
 
+  certification: '认证',
+  certification_status: '认证状态',
   already_certification: '已认证',
   wait_certification: '待认证',
 

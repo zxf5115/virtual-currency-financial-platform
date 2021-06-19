@@ -29,30 +29,8 @@
             <el-input v-model="dataForm.username" :placeholder="$t('common.please_input') + $t('member.username')"></el-input>
           </el-form-item>
 
-          <el-form-item :label="$t('common.sms_notification')" prop="sms_notification">
-            <el-checkbox v-model="dataForm.sms_notification">
-              {{ $t('common.send_sms_notification') }}
-            </el-checkbox>
-          </el-form-item>
-
           <el-form-item :label="$t('member.nickname')" prop="nickname">
             <el-input v-model="dataForm.nickname" :placeholder="$t('common.please_input') + $t('member.nickname')"></el-input>
-          </el-form-item>
-
-          <el-form-item :label="$t('member.mobile')" prop="mobile">
-            <el-input v-model="dataForm.mobile" :placeholder="$t('common.please_input') + $t('member.mobile')"></el-input>
-          </el-form-item>
-
-          <el-form-item :label="$t('member.email')" prop="email">
-            <el-input v-model="dataForm.email" :placeholder="$t('common.please_input') + $t('member.email')"></el-input>
-          </el-form-item>
-
-          <el-form-item :label="$t('member.role.title')" class="width_auto">
-            <el-checkbox-group v-model="dataForm.role_id" :max=1>
-              <el-checkbox v-for="(v,k) in roleList" :key="k" :label="v.id">
-                {{v.title}}
-              </el-checkbox>
-            </el-checkbox-group>
           </el-form-item>
 
           <el-form-item :label="$t('member.status')" prop="status">
@@ -81,19 +59,14 @@
     data() {
       return {
         model: 'member',
-        roleList: [],
         upload_headers:{},
         dataForm:
         {
           id: 0,
-          role_id : [],
           avatar: '',
           username: '',
           nickname: '',
-          email: '',
-          mobile: '',
           status: '1',
-          sms_notification: true,
         },
         dataRule:
         {
@@ -125,8 +98,6 @@
                 this.dataForm.avatar   = data.data.avatar
                 this.dataForm.username = data.data.username
                 this.dataForm.nickname = data.data.nickname
-                this.dataForm.email    = data.data.email
-                this.dataForm.mobile   = data.data.mobile
                 this.dataForm.status   = data.data.status.value + ''
               }
             })
@@ -142,14 +113,10 @@
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
-                'role_id': this.dataForm.role_id,
                 'avatar': this.dataForm.avatar,
                 'username': this.dataForm.username,
                 'nickname': this.dataForm.nickname,
-                'mobile': this.dataForm.mobile,
-                'email': this.dataForm.email,
                 'status': this.dataForm.status,
-                'sms_notification': this.dataForm.sms_notification,
               })
             }).then(({data}) => {
               if (data && data.status === 200) {
@@ -162,39 +129,9 @@
           }
         })
       },
-      loadRoleList () {
-        this.$http({
-          url: this.$http.adornUrl('/member/role/select'),
-          method: 'get'
-        }).then(({data}) => {
-          if (data && data.status === 200) {
-            this.roleList = data.data
-          } else {
-            this.$message.error(this.$t(data.message))
-          }
-        })
-      },
       resetForm:function()
       {
         this.$refs['dataForm'].resetFields();
-      },
-      handleAvatarSuccess(res, file) {
-        this.dataForm.avatar = res.data;
-      },
-      beforeAvatarUpload(file) {
-        const isPicture = (file.type === 'image/jpeg' || file.type === 'image/png');
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isPicture) {
-          var message = this.$t('common.rules.picture.picture_type');
-          this.$message.error(this.$t(data.message))
-        }
-        if (!isLt2M) {
-          var message = this.$t('common.rules.picture.picture_size');
-          this.$message.error(this.$t(data.message))
-        }
-
-        return isPicture && isLt2M;
       },
     },
     created() {
@@ -202,9 +139,6 @@
 
       // 要保证取到
       this.upload_headers.Authorization = 'Bearer ' + localStorage.getItem('token');
-    },
-    mounted () {
-      this.loadRoleList();
     },
   };
 </script>

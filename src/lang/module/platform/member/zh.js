@@ -1,26 +1,30 @@
 export const member = {
-  list: '学员列表',
-  from: '学员操作',
-  info: '学员信息',
-  view: '学员详情',
-  delete: '删除学员',
-  export: '导出学员',
-  archive_info: '学员档案',
-  view_order: '查看订单',
-  course_production: '课程作品',
-  upload_finish: '已上传',
-  upload_wait: '未上传',
+  list: '会员列表',
+  from: '会员操作',
+  info: '会员信息',
+  view: '会员详情',
+  delete: '删除会员',
+  export: '导出会员',
+  archive_info: '会员档案',
+  vip_info: '贵宾信息',
+  asset_info: '资金信息',
+  social_info: '社交信息',
+  certification_info: '认证信息',
+  certification_personal: '个人认证',
+  certification_company: '企业认证',
+  certification_project: '项目认证',
+  certification_status: '认证状态',
+  certification_content: '认证意见',
 
-  member_no: '学员ID',
-  avatar: '宝宝头像',
+  member_no: '会员ID',
+  avatar: '会员头像',
   username: '登录账户',
   mobile: '手机',
   email: '邮箱',
-  nickname: '宝宝昵称',
-
-  red_envelope: '红包金额',
-  lollipop: '棒棒糖',
-  production: '累计作品',
+  nickname: '会员昵称',
+  vip_title: '会员类型',
+  vip_end_time: '到期时间',
+  asset_money: '账户余额',
 
   status: '账号状态',
   last_login_time: '最后登录时间',
@@ -29,8 +33,9 @@ export const member = {
   enable: '解禁',
   disable: '禁用',
 
-  freeze: '冻结',
-  thaw: '解冻',
+  push: 'APP推送',
+  push_course: '课程推送',
+  push_activity: '活动推送',
 
   role: {
     list: '身份列表',
@@ -77,28 +82,21 @@ export const member = {
     list: '档案列表',
     from: '档案操作',
     view: '档案详情',
-    info: '学员档案',
+    info: '会员档案',
 
-    sex: '宝宝性别',
-    age: '宝宝年龄',
-    weixin: '微信号',
-    birthday: '宝宝生日',
+    sex: '会员性别',
+    attention_total: '关注总数',
+    fans_total: '粉丝总数',
+    approval_total: '点赞总数',
+    accepted_total: '获赞总数',
     city: '所在城市',
     area: '地区',
     address: '详细地址',
 
 
-
-    // study_type: '订单编号',
-    // study_type: '购买课程',
-    // start_time: '课程周期',
-    // end_time: '开课时间',
-    // course_study_time: '购课金额',
-    // course_study_time: '购买时间',
-
     rules: {
       member_id: {
-        require: '学员昵称不能为空',
+        require: '会员昵称不能为空',
       },
       realname: {
         require: '真实姓名不能为空',
@@ -111,7 +109,7 @@ export const member = {
 
   homework: {
     'answer_time': '完成时间',
-    'answer_content': '学员答案',
+    'answer_content': '会员答案',
     'answer_result': '老师批复',
     'answer_remark': '老师建议',
   },
@@ -130,8 +128,27 @@ export const member = {
     address: '收货地址',
   },
 
-  account: {
-    payment_name: '支付宝姓名',
-    payment_account: '支付宝账号',
+  certification: {
+    personal: {
+      id_card_front_picture: '身份证正面照片',
+      id_card_behind_picture: '身份证反面照片',
+    },
+    company: {
+      company_name: '企业名称',
+      business_license_no: '营业执照号',
+      business_license_picture: '营业执照图片',
+    },
+    project: {
+      project_name: '项目名称',
+      project_logo: '项目logo',
+      realname: '联系人',
+      mobile: '联系人手机号',
+      project_category: '项目分类',
+      project_website: '项目官网',
+      project_document: '白皮书地址',
+      project_social: '社交媒体',
+      project_report: '审计报告',
+      project_github: 'github地址',
+    },
   }
 }
