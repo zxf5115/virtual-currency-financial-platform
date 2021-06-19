@@ -133,7 +133,7 @@
             <span>{{ $t('member.certification_project') }}</span>
           </div>
           <div class="text item">
-             <el-form :model="dataForm" label-width="150px" label-position="top">
+             <el-form :model="dataForm" label-width="120px">
               <el-row>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.certification.project.project_name')" label-width="100">
