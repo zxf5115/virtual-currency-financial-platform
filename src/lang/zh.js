@@ -39,6 +39,8 @@ import  {flash}  from './module/platform/flash/zh'
 
 import  {information}  from './module/platform/information/zh'
 
+import  {vip}  from './module/platform/vip/zh'
+
 export default {
 
   // 公共
@@ -151,5 +153,10 @@ export default {
   // 资讯
   information: {
     ...information
+  },
+
+  // 贵宾
+  vip: {
+    ...vip
   }
 }
