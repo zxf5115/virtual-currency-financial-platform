@@ -6,7 +6,7 @@ export const vip = {
   title: '贵宾标题',
   content: '贵宾内容',
   money: '贵宾费用',
-  valid_time: '贵宾时限',
+  valid_time: '贵宾时限(月)',
 
   rules: {
     title: {
