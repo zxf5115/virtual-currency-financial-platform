@@ -41,6 +41,8 @@ import  {information}  from './module/platform/information/zh'
 
 import  {vip}  from './module/platform/vip/zh'
 
+import  {community}  from './module/platform/community/zh'
+
 export default {
 
   // 公共
@@ -158,5 +160,10 @@ export default {
   // 贵宾
   vip: {
     ...vip
+  },
+
+  // 社区
+  community: {
+    ...community
   }
 }
