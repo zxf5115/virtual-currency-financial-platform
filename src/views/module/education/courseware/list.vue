@@ -8,6 +8,11 @@
               {{ $t('common.create') }}
             </el-button>
           </div>
+          <div>
+            <el-button v-if="isAuth('module:education:courseware:category:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_education_courseware_category_list'})">
+              {{ $t('courseware.category.list') }}
+            </el-button>
+          </div>
         </div>
       </div>
 
@@ -33,35 +38,70 @@
           <el-table-column prop="id" :label="$t('common.id')"  width="70">
           </el-table-column>
 
-          <el-table-column prop="title" :label="$t('courseware.title')" width="200">
+          <el-table-column prop="code" :label="$t('courseware.code')" width="100">
           </el-table-column>
 
-          <el-table-column prop="description" :label="$t('courseware.description')">
+          <el-table-column :label="$t('courseware.course_category')" width="150">
+            <template slot-scope="scope">
+              <span v-if="scope.row.category">
+                {{ scope.row.category.title }}
+              </span>
+            </template>
           </el-table-column>
 
-          <el-table-column prop="time_limit" :label="$t('courseware.time_limit')" width="180">
+          <el-table-column prop="title" :label="$t('courseware.title')">
           </el-table-column>
 
-          <el-table-column :label="$t('common.handle')" fixed="right" width="400">
+          <el-table-column prop="money" :label="$t('courseware.money')" width="120">
+          </el-table-column>
+
+          <el-table-column prop="sort" :label="$t('common.sort')" width="100">
+          </el-table-column>
+
+          <el-table-column :label="$t('courseware.is_shelf')" width="100">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.is_shelf.value"
+                :active-value="1"
+                :inactive-value="2"
+                @change="handleStatus($event, scope.row.id, 'is_shelf')">
+              </el-switch>
+            </template>
+          </el-table-column>
+
+          <el-table-column :label="$t('courseware.is_trial')" width="100">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.is_trial.value"
+                :active-value="1"
+                :inactive-value="2"
+                @change="handleStatus($event, scope.row.id, 'is_trial')">
+              </el-switch>
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="is_recommend" :label="$t('courseware.is_recommend')" width="100">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.is_recommend.value"
+                :active-value="1"
+                :inactive-value="2"
+                @change="handleStatus($event, scope.row.id, 'is_recommend')">
+              </el-switch>
+            </template>
+          </el-table-column>
+
+          <el-table-column :label="$t('common.handle')" fixed="right" width="320">
             <template slot-scope="scope">
               <el-button v-if="isAuth('module:education:courseware:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_education_courseware_form', query: {id : scope.row.id}})">
                 {{ $t('common.update') }}
               </el-button>
 
-              <el-button v-if="isAuth('module:education:courseware:status')" :type="scope.row.status.value == 2 ? 'danger' : 'success'" :icon="scope.row.status.value == 1 ? 'el-icon-check' : 'el-icon-close'" @click="enableHandle(scope.row.id, scope.row.status.value)">
-                <span v-if="scope.row.status.value == 1">
-                  {{ $t('courseware.enable') }}
-                </span>
-                <span v-else>
-                  {{ $t('courseware.disable') }}
-                </span>
+              <el-button v-if="isAuth('module:education:courseware:point:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_education_courseware_point_list', query: {'courseware_id': scope.row.id}})">
+                {{ $t('courseware.point_info') }}
               </el-button>
 
-              <el-button v-if="isAuth('module:education:courseware:level:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_education_courseware_level_list', query: {'courseware_id': scope.row.id}})">
-                {{ $t('courseware.level_info') }}
-              </el-button>
-
-              <el-button v-if="isAuth('module:education:courseware:delete') && scope.row.is_delete" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
+              <el-button v-if="isAuth('module:education:courseware:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
                 <span class="delete">{{$t('common.delete')}}</span>
               </el-button>
             </template>
@@ -96,40 +136,31 @@
       };
     },
     methods: {
-      // 停用（启用）课程类型
-      enableHandle (id, status) {
-        let message = '您确定要启用当前课程类型？'
+       handleStatus($event, id, field) {
 
-        if(1 == status)
-        {
-          message = '您确定要停用当前课程类型？'
-        }
-
-        this.$confirm(message, this.$t('common.prompt'), {
-          confirmButtonText: this.$t('common.confirm'),
-          cancelButtonText: this.$t('common.cancel'),
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/'+this.model+'/status'),
-            method: 'post',
-            data: {id: id}
-          }).then(({data}) => {
-            if (data && data.status === 200) {
-              this.$message({
-                message: this.$t('common.handle_success'),
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(this.$t(data.message))
-            }
-          })
-        }).catch(() => {})
-      }
+        this.$http({
+          url: this.$http.adornUrl('/education/courseware/status'),
+          method: 'post',
+          data: {
+            id: id,
+            field: field,
+            value: $event
+          }
+        }).then(({data}) => {
+          if (data && data.status === 200) {
+            this.$message({
+              message: this.$t('common.handle_success'),
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.getDataList()
+              }
+            })
+          } else {
+            this.$message.error(this.$t(data.message))
+          }
+        })
+       }
     },
     created() {
       this.getDataList()

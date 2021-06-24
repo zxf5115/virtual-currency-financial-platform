@@ -18,7 +18,7 @@ import  {organization}  from './module/platform/organization/zh'
 import  {member}  from './module/platform/member/zh'
 
 import  {advertising}  from './module/platform/advertising/zh'
-import  {course}  from './module/platform/education/course/zh'
+
 import  {courseware}  from './module/platform/education/courseware/zh'
 
 import  {order}  from './module/platform/order/zh'
@@ -100,11 +100,6 @@ export default {
   // 学员
   member: {
     ...member
-  },
-
-  // 课程
-  course: {
-    ...course
   },
 
   // 课件

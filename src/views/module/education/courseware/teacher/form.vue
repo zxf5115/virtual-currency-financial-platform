@@ -3,7 +3,7 @@
     <div class="admin_main_block">
       <div class="admin_main_block_top">
         <div class="admin_main_block_left">
-          <div>{{ $t('courseware.level.unit.from') }}</div>
+          <div>{{ $t('courseware.teacher.from') }}</div>
         </div>
 
         <div class="admin_main_block_right">
@@ -15,26 +15,37 @@
         </div>
       </div>
 
-      <div class="admin_form_main">
+      <div class="admin_form_main color">
         <el-form label-width="120px" ref="dataForm" :model="dataForm" :rules="dataRule">
 
-          <el-form-item :label="$t('courseware.level.unit.title')" prop="title">
-            <el-input :placeholder="$t('common.please_input') + $t('courseware.level.unit.title')" v-model="dataForm.title"></el-input>
+          <el-form-item :label="$t('courseware.teacher.title')" prop="title">
+            <el-input :placeholder="$t('common.please_input') + $t('courseware.teacher.title')" v-model="dataForm.title"></el-input>
           </el-form-item>
 
-          <el-form-item :label="$t('courseware.level.unit.description')" prop="description">
-            <el-input :placeholder="$t('common.please_input') + $t('courseware.level.unit.description')" type="textarea" v-model="dataForm.description"></el-input>
-          </el-form-item>
-
-          <el-form-item :label="$t('courseware.level.unit.picture')" prop="picture">
+          <el-form-item :label="$t('courseware.teacher.picture')" prop="picture">
             <el-upload class="avatar-uploader" :action="this.$http.adornUrl('/file/picture')" :show-file-list="false" :headers="upload_headers" :on-success="handlePictureSuccess" :before-upload="beforePictureUpload">
               <img v-if="dataForm.picture" :src="dataForm.picture" class="avatar-upload">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
+            <div class="red">
+              建议尺寸120*90像素, 大小不要超过1M
+            </div>
           </el-form-item>
 
-          <el-form-item :label="$t('courseware.level.unit.sort')" prop="sort">
-            <el-input-number :placeholder="$t('common.please_input') + $t('courseware.level.unit.sort')" :min="0" :max="100" v-model="dataForm.sort"></el-input-number>
+          <el-form-item prop="mobile" :label="$t('courseware.teacher.mobile')">
+            <el-input :placeholder="$t('common.please_input') + $t('courseware.teacher.mobile')" v-model="dataForm.mobile"></el-input>
+          </el-form-item>
+
+          <el-form-item prop="position" :label="$t('courseware.teacher.position')">
+            <el-input :placeholder="$t('common.please_input') + $t('courseware.teacher.position')" v-model="dataForm.position"></el-input>
+          </el-form-item>
+
+          <el-form-item class="mavon" prop="content" :label="$t('courseware.content')">
+            <editor ref="editor" :value="dataForm.content"></editor>
+          </el-form-item>
+
+          <el-form-item :label="$t('common.sort')" prop="sort">
+            <el-input-number :placeholder="$t('common.please_input') + $t('common.sort')" :min="0" :max="100" v-model="dataForm.sort"></el-input-number>
           </el-form-item>
 
           <el-form-item>
@@ -54,31 +65,37 @@
 
 <script>
   import common from '@/views/common/base'
-  export default
-  {
+  import Editor from "@/components/form/editor"
+  export default {
     extends: common,
+    components: {
+      Editor
+    },
     data()
     {
       return {
-        model: 'education/courseware/level/unit',
+        model: 'education/courseware/teacher',
         upload_headers:{},
         dataForm:
         {
           id: 0,
-          courseware_id: 0,
-          level_id: 0,
           title: '',
-          description: '',
+          content: '',
           picture: '',
+          mobile: '',
+          position: '',
           sort: 0,
         },
         dataRule:
         {
           title: [
-            { required: true, message: this.$t('courseware.level.unit.rules.title.require'), trigger: 'blur' }
+            { required: true, message: this.$t('courseware.teacher.rules.title.require'), trigger: 'blur' }
           ],
           picture: [
-            { required: true, message: this.$t('courseware.level.unit.rules.picture.require'), trigger: 'blur' }
+            { required: true, message: this.$t('courseware.teacher.rules.picture.require'), trigger: 'blur' }
+          ],
+          mobile: [
+            { required: true, message: this.$t('courseware.teacher.rules.mobile.require'), trigger: 'blur' }
           ],
         }
       };
@@ -95,17 +112,18 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/education/courseware/level/unit/view/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/education/courseware/teacher/view/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
-                this.dataForm.courseware_id = data.data.courseware_id
-                this.dataForm.level_id      = data.data.level_id
-                this.dataForm.title         = data.data.title
-                this.dataForm.description   = data.data.description
-                this.dataForm.picture       = data.data.picture
-                this.dataForm.sort          = data.data.sort
+                this.dataForm.title    = data.data.title
+                this.dataForm.content  = data.data.content
+                this.dataForm.picture  = data.data.picture
+                this.dataForm.position = data.data.position
+                this.dataForm.mobile   = data.data.mobile
+                this.dataForm.code     = data.data.code
+                this.dataForm.sort     = data.data.sort
               }
             })
           }
@@ -116,15 +134,16 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/education/courseware/level/unit/handle`),
+              url: this.$http.adornUrl(`/education/courseware/teacher/handle`),
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
-                'courseware_id': this.dataForm.courseware_id,
-                'level_id': this.dataForm.level_id,
+                'code': this.dataForm.code,
                 'title': this.dataForm.title,
-                'description': this.dataForm.description,
+                'content': this.$refs.editor.content,
                 'picture': this.dataForm.picture,
+                'mobile': this.dataForm.mobile,
+                'position': this.dataForm.position,
                 'sort': this.dataForm.sort,
               })
             }).then(({data}) => {
@@ -138,19 +157,18 @@
           }
         })
       },
-      resetForm:function()
+      resetForm: function()
       {
         this.$refs['dataForm'].resetFields();
       }
     },
     created(request)
     {
-      this.dataForm.courseware_id = this.$route.query.courseware_id;
-      this.dataForm.level_id      = this.$route.query.level_id;
       this.init();
 
       // 要保证取到
       this.upload_headers.Authorization = 'Bearer ' + localStorage.getItem('token');
+
     }
   };
 </script>
