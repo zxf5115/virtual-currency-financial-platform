@@ -16,7 +16,7 @@
             </el-button>
           </div>
           <div class="mr10">
-            <el-button icon="el-icon-back" @click="$router.push({name: 'module_education_courseware_level_unit_list', query: {courseware_id: dataForm.courseware_id}})">
+            <el-button icon="el-icon-back" @click="$router.push({name: 'module_education_courseware_list'})">
               {{ $t('common.return') }}
             </el-button>
           </div>
