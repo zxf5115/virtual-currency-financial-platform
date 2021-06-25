@@ -3,12 +3,12 @@
     <div class="admin_main_block">
       <div class="admin_main_block_top">
         <div class="admin_main_block_left">
-          <div>{{ $t('courseware.level.unit.point.from') }}</div>
+          <div>{{ $t('courseware.point.from') }}</div>
         </div>
 
         <div class="admin_main_block_right">
           <div>
-            <el-button icon="el-icon-back" @click="$router.push({name: 'module_education_courseware_level_unit_point_list', query: {courseware_id: dataForm.courseware_id, level_id: dataForm.level_id, unit_id: dataForm.unit_id}})">
+            <el-button icon="el-icon-back" @click="$router.push({name: 'module_education_courseware_point_list', query: {courseware_id: dataForm.courseware_id}})">
               {{ $t('common.return') }}
             </el-button>
           </div>
@@ -18,29 +18,29 @@
       <div class="admin_form_main">
         <el-form label-width="120px" ref="dataForm" :model="dataForm" :rules="dataRule">
 
-          <el-form-item :label="$t('courseware.level.unit.point.title')" prop="title">
-            <el-input :placeholder="$t('common.please_input') + $t('courseware.level.unit.point.title')" v-model="dataForm.title"></el-input>
+          <el-form-item :label="$t('courseware.point.title')" prop="title">
+            <el-input :placeholder="$t('common.please_input') + $t('courseware.point.title')" v-model="dataForm.title"></el-input>
           </el-form-item>
 
-          <el-form-item :label="$t('courseware.level.unit.point.picture')" prop="picture">
+          <el-form-item :label="$t('courseware.point.picture')" prop="picture">
             <el-upload class="avatar-uploader" :action="this.$http.adornUrl('/file/picture')" :show-file-list="false" :headers="upload_headers" :on-success="handlePictureSuccess" :before-upload="beforePictureUpload">
               <img v-if="dataForm.picture" :src="dataForm.picture" class="avatar-upload">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
 
-          <el-form-item :label="$t('courseware.level.unit.point.url')" prop="url">
+          <el-form-item :label="$t('courseware.point.url')" prop="url">
             <ele-upload-video :headers="upload_headers"
               :fileSize="20"
               @error="handleVideoError"
               :responseFn="handleVideoSuccess"
-              :action="this.$http.adornUrl('/file/course')"
+              :action="this.$http.adornUrl('/file/file')"
               v-model="dataForm.url"
             />
           </el-form-item>
 
-          <el-form-item :label="$t('courseware.level.unit.point.sort')" prop="sort">
-            <el-input-number :placeholder="$t('common.please_input') + $t('courseware.level.unit.point.sort')" :min="0" :max="100" v-model="dataForm.sort"></el-input-number>
+          <el-form-item :label="$t('courseware.point.sort')" prop="sort">
+            <el-input-number :placeholder="$t('common.please_input') + $t('courseware.point.sort')" :min="0" :max="100" v-model="dataForm.sort"></el-input-number>
           </el-form-item>
 
           <el-form-item>
@@ -70,14 +70,12 @@
     data()
     {
       return {
-        model: 'education/courseware/level/unit/point',
+        model: 'education/courseware/point',
         upload_headers:{},
         dataForm:
         {
           id: 0,
           courseware_id: 0,
-          level_id: 0,
-          unit_id: 0,
           title: '',
           picture: '',
           url: '',
@@ -86,13 +84,13 @@
         dataRule:
         {
           title: [
-            { required: true, message: this.$t('courseware.level.unit.point.rules.title.require'), trigger: 'blur' }
+            { required: true, message: this.$t('courseware.point.rules.title.require'), trigger: 'blur' }
           ],
           picture: [
-            { required: true, message: this.$t('courseware.level.unit.point.rules.picture.require'), trigger: 'blur' }
+            { required: true, message: this.$t('courseware.point.rules.picture.require'), trigger: 'blur' }
           ],
           url: [
-            { required: true, message: this.$t('courseware.level.unit.point.rules.url.require'), trigger: 'blur' }
+            { required: true, message: this.$t('courseware.point.rules.url.require'), trigger: 'blur' }
           ],
         }
       };
@@ -109,14 +107,12 @@
           this.$refs['dataForm'].resetFields()
           if (this.dataForm.id) {
             this.$http({
-              url: this.$http.adornUrl(`/education/courseware/level/unit/point/view/${this.dataForm.id}`),
+              url: this.$http.adornUrl(`/education/courseware/point/view/${this.dataForm.id}`),
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
                 this.dataForm.courseware_id = data.data.courseware_id
-                this.dataForm.level_id      = data.data.level_id
-                this.dataForm.unit_id       = data.data.unit_id
                 this.dataForm.title         = data.data.title
                 this.dataForm.picture       = data.data.picture
                 this.dataForm.url           = data.data.url
@@ -131,13 +127,11 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/education/courseware/level/unit/point/handle`),
+              url: this.$http.adornUrl(`/education/courseware/point/handle`),
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'courseware_id': this.dataForm.courseware_id,
-                'level_id': this.dataForm.level_id,
-                'unit_id': this.dataForm.unit_id,
                 'title': this.dataForm.title,
                 'picture': this.dataForm.picture,
                 'url': this.dataForm.url,
@@ -168,8 +162,6 @@
     created(request)
     {
       this.dataForm.courseware_id = this.$route.query.courseware_id;
-      this.dataForm.level_id      = this.$route.query.level_id;
-      this.dataForm.unit_id       = this.$route.query.unit_id;
       this.init();
 
       // 要保证取到

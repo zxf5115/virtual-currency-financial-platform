@@ -1,41 +1,41 @@
 export const courseware = {
-  list: '课件列表',
-  from: '课件操作',
-  view: '课件详情',
-  point_info: '课件知识点',
+  list: '课程列表',
+  from: '课程操作',
+  view: '课程详情',
+  point_info: '课程知识点',
 
-  code: '课件编号',
-  title: '课件名称',
-  course_category: '课件分类',
-  teacher_name: '课件讲师',
+  code: '课程编号',
+  title: '课程名称',
+  course_category: '课程分类',
+  teacher_name: '课程讲师',
   picture: '封面图片',
-  content: '课件介绍',
-  money: '课件价格',
+  content: '课程介绍',
+  money: '课程价格',
   is_shelf: '是否上架',
   is_trial: '是否试看',
   is_recommend: '是否推荐',
-  sort: '课件排序',
+  sort: '课程排序',
   enable: '启用',
   disable: '停用',
 
   rules: {
     category_id: {
-      require: '课件分类不能为空',
+      require: '课程分类不能为空',
     },
     teacher_id: {
-      require: '课件讲师不能为空',
+      require: '课程讲师不能为空',
     },
     code: {
-      require: '课件编号不能为空',
+      require: '课程编号不能为空',
     },
     title: {
-      require: '课件名称不能为空',
+      require: '课程名称不能为空',
     },
     picture: {
-      require: '课件封面不能为空',
+      require: '课程封面不能为空',
     },
     money: {
-      require: '课件价格不能为空',
+      require: '课程价格不能为空',
     },
   },
 
@@ -62,21 +62,21 @@ export const courseware = {
     },
   },
 
-  // 课件分类
+  // 课程分类
   category: {
-    list: '课件分类列表',
-    from: '课件分类操作',
+    list: '课程分类列表',
+    from: '课程分类操作',
 
-    title: '课件分类标题',
+    title: '课程分类标题',
 
     rules: {
       title: {
-        require: '课件分类标题不能为空',
+        require: '课程分类标题不能为空',
       }
     },
   },
 
-  // 课件讲师
+  // 课程讲师
   teacher: {
     list: '讲师列表',
     from: '讲师操作',
