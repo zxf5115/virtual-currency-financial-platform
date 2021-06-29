@@ -43,6 +43,8 @@ import  {vip}  from './module/platform/vip/zh'
 
 import  {community}  from './module/platform/community/zh'
 
+import  {currency}  from './module/platform/currency/zh'
+
 export default {
 
   // 公共
@@ -160,5 +162,10 @@ export default {
   // 社区
   community: {
     ...community
-  }
+  },
+
+  // 货币
+  currency: {
+    ...currency
+  },
 }

@@ -48,7 +48,7 @@ export default {
           'page': this.pageIndex,
           'limit': this.pageSize,
           'name': this.dataForm.name,
-          'head': this.dataForm.head,
+          'code': this.dataForm.code,
           'title': this.dataForm.title,
           'username': this.dataForm.username,
           'nickname': this.dataForm.nickname,
@@ -56,29 +56,28 @@ export default {
           'id_card_no': this.dataForm.id_card_no,
           'content': this.dataForm.content,
           'category': this.dataForm.category,
+
           'pid': this.dataForm.pid,
           'role_id': this.dataForm.role_id,
-
           'parent_id': this.dataForm.parent_id,
           'category_id': this.dataForm.category_id,
-
           'courseware_id': this.dataForm.courseware_id,
-          'level_id': this.dataForm.level_id,
-          'unit_id': this.dataForm.unit_id,
-
-          'add_time': this.dataForm.add_time,
-          'valid_time': this.dataForm.valid_time,
-          'create_time': this.dataForm.create_time,
           'team_id': this.dataForm.team_id,
           'paper_id': this.dataForm.paper_id,
           'course_id': this.dataForm.course_id,
           'position_id': this.dataForm.position_id,
           'organization_id': this.dataForm.organization_id,
+          'relevance_role_id': this.dataForm.relevance_role_id,
+
+          'add_time': this.dataForm.add_time,
+          'valid_time': this.dataForm.valid_time,
+          'create_time': this.dataForm.create_time,
+
           'audit_status': this.dataForm.audit_status,
           'certification_status': this.dataForm.certification_status,
+
           'is_recommend': this.dataForm.is_recommend,
           'is_hidden': this.dataForm.is_hidden,
-          'relevance_role_id': this.dataForm.relevance_role_id,
           'course_title': this.dataForm.course_title,
           'organization_title': this.dataForm.organization_title,
           'archive_weixin': this.dataForm.archive_weixin,
@@ -95,6 +94,11 @@ export default {
           'goods_title': this.dataForm.goods_title,
           'course_start_time': this.dataForm.course_start_time,
           'account_payment_account': this.dataForm.account_payment_account,
+          'symbol': this.dataForm.symbol,
+          'base_currency': this.dataForm.base_currency,
+          'quote_currency': this.dataForm.quote_currency,
+          'courseware_title': this.dataForm.courseware_title,
+
         })
       }).then(({data}) => {
         if (data && data.status === 200)
