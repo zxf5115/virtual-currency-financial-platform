@@ -8,6 +8,11 @@
               {{ $t('common.batch_delete') }}
             </el-button>
           </div>
+          <div class="mr10">
+            <el-button v-if="isAuth('module:order:export')" type="success" icon="el-icon-download" @click="handleExport">
+              {{ $t('common.export') }}
+            </el-button>
+          </div>
         </div>
       </div>
 
@@ -183,6 +188,25 @@
             }
           })
         }).catch(() => {})
+      },
+      handleExport() {
+        this.$http({
+          url: this.$http.adornUrl(`/order/export`),
+          method: 'post',
+          data: this.$http.adornData({
+            'order_no': this.dataForm.order_no,
+            'courseware_title': this.dataForm.courseware_title,
+            'member_username': this.dataForm.member_username,
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+          })
+        }).then(({data}) => {
+          if (data && data.status === 200) {
+            window.open(data.data)
+          } else {
+            this.$message.error(this.$t(data.message))
+          }
+        })
       }
     },
   };
