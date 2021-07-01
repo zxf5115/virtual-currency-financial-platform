@@ -2,7 +2,7 @@
   <div class="qingwu color">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>订单统计</span>
+        <span>销售额总览</span>
       </div>
       <div class="text item text-center">
         <el-row :gutter="20">
