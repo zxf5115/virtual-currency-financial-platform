@@ -17,6 +17,12 @@
 
       <div class="admin_form_main">
         <el-form label-width="140px" ref="dataForm" :model="dataForm" :rules="dataRule">
+          <el-form-item :label="$t('community.category.symbol')" prop="symbol_id">
+            <el-select v-model="dataForm.symbol_id" filterable :placeholder="$t('common.please_select')+$t('community.category.symbol')">
+              <el-option v-for="(v,k) in symbolList" :label="v.title" :key="k" :value="v.id"></el-option>
+            </el-select>
+          </el-form-item>
+
           <el-form-item :label="$t('community.category.title')" prop="title">
             <el-input :placeholder="$t('community.category.title')" v-model="dataForm.title"></el-input>
           </el-form-item>
@@ -49,10 +55,11 @@
     {
       return {
         model: 'community/category',
-        courseList: [],
+        symbolList: [],
         dataForm:
         {
           id: 0,
+          symbol_id: '',
           title: '',
           sort: 0,
         },
@@ -81,8 +88,9 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
+                this.dataForm.symbol_id = data.data.symbol_id
                 this.dataForm.title     = data.data.title
-                this.dataForm.sort  = data.data.sort
+                this.dataForm.sort      = data.data.sort
               }
             })
           }
@@ -97,6 +105,7 @@
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
+                'symbol_id': this.dataForm.symbol_id,
                 'title': this.dataForm.title,
                 'sort': this.dataForm.sort,
               })
@@ -114,11 +123,25 @@
       resetForm:function()
       {
         this.$refs['dataForm'].resetFields();
-      }
+      },
+      loadSymbolList () {
+        this.$http({
+          url: this.$http.adornUrl('/currency/symbol/select'),
+          method: 'get'
+        }).then(({data}) => {
+          if (data && data.status === 200) {
+            this.symbolList = data.data
+          } else {
+            this.$message.error(this.$t(data.message))
+          }
+        })
+      },
     },
     created(request)
     {
       this.init();
+
+      this.loadSymbolList();
     }
   };
 </script>

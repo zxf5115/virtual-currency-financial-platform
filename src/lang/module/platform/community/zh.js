@@ -28,6 +28,7 @@ export const community = {
     list: '社区分类列表',
     from: '社区分类操作',
 
+    symbol: '所属交易对',
     title: '社区分类标题',
 
     rules: {

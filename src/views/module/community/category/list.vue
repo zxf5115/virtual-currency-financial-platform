@@ -34,6 +34,14 @@
           <el-table-column prop="id" label="#" width="70px">
           </el-table-column>
 
+          <el-table-column :label="$t('community.category.symbol')">
+            <template slot-scope="scope">
+              <span v-if="scope.row.symbol">
+                {{ scope.row.symbol.title }}
+              </span>
+            </template>
+          </el-table-column>
+
           <el-table-column prop="title" :label="$t('community.category.title')">
           </el-table-column>
 
