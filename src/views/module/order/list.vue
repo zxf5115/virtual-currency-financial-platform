@@ -37,7 +37,7 @@
             </el-select>
           </div>
           <div>
-            <el-button icon="el-icon-search" @click="getDataList()">
+            <el-button icon="el-icon-search" @click="getDataList(true)">
               {{ $t('common.search') }}
             </el-button>
           </div>
@@ -54,8 +54,8 @@
 
           <el-table-column :label="$t('courseware.title')" width="200">
             <template slot-scope="scope">
-              <span v-if="scope.row.courseware">
-                {{ scope.row.courseware.title }}
+              <span v-if="scope.row.courseware" v-for="(v,k) in scope.row.courseware" :key="k">
+                <div>{{ v.title }}</div>
               </span>
             </template>
           </el-table-column>
@@ -103,12 +103,12 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="create_time" :label="$t('order.create_time')">
+          <el-table-column prop="create_time" :label="$t('order.create_time')" width="140">
           </el-table-column>
 
           <el-table-column :label="$t('common.handle')" fixed="right" width="360">
             <template slot-scope="scope">
-              <el-button v-if="isAuth('module:order:view')" type="info" icon="el-icon-view" @click="$router.push({name: 'module_order_course_view', query: {id: scope.row.id}})">
+              <el-button v-if="isAuth('module:order:view')" type="info" icon="el-icon-view" @click="$router.push({name: 'module_order_view', query: {id: scope.row.id}})">
                 {{ $t('order.view') }}
               </el-button>
 

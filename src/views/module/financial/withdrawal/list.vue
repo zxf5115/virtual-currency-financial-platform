@@ -12,7 +12,7 @@
             </el-input>
           </div>
           <div>
-            <el-button icon="el-icon-search" @click="getDataList()">
+            <el-button icon="el-icon-search" @click="getDataList(true)">
               {{ $t('common.search') }}
             </el-button>
           </div>
