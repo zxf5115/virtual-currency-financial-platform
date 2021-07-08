@@ -14,6 +14,7 @@ export const courseware = {
   is_shelf: '是否上架',
   is_trial: '是否试看',
   is_recommend: '是否推荐',
+  point_total: '课时(集)',
   sort: '课程排序',
   enable: '启用',
   disable: '停用',
