@@ -10,7 +10,8 @@ export const order = {
   member_info: '买家信息',
   course_info: '课程信息',
   order_info: '订单信息',
-  handle_info: '订单操作',
+  handle_info: '操作信息',
+  remark_info: '备注信息',
 
   order_no: '订单号',
   nickname: '购买用户',
@@ -20,8 +21,11 @@ export const order = {
   pay_type: '支付类型',
   pay_time: '支付时间',
   pay_status: '支付状态',
+  remark: '订单备注',
   order_status: '订单状态',
   create_time: '下单时间',
+
+  current_order_status: '当前订单状态: ',
 
   log: {
     username: '操作人',

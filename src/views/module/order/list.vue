@@ -31,6 +31,12 @@
             </el-input>
           </div>
           <div>
+            <el-select v-model="dataForm.pay_status" :placeholder="$t('common.please_select') + $t('order.pay_status')" clearable>
+              <el-option :label="$t('common.all')" value=""></el-option>
+              <el-option v-for="(v,k) in payList" :label="v.title" :key="k" :value="v.id"></el-option>
+            </el-select>
+          </div>
+          <div>
             <el-select v-model="dataForm.order_status" :placeholder="$t('common.please_select') + $t('order.order_status')" clearable>
               <el-option :label="$t('common.all')" value=""></el-option>
               <el-option v-for="(v,k) in orderList" :label="v.title" :key="k" :value="v.id"></el-option>
@@ -106,17 +112,13 @@
           <el-table-column prop="create_time" :label="$t('order.create_time')" width="140">
           </el-table-column>
 
-          <el-table-column :label="$t('common.handle')" fixed="right" width="360">
+          <el-table-column :label="$t('common.handle')" fixed="right" width="240">
             <template slot-scope="scope">
               <el-button v-if="isAuth('module:order:view')" type="info" icon="el-icon-view" @click="$router.push({name: 'module_order_view', query: {id: scope.row.id}})">
                 {{ $t('order.view') }}
               </el-button>
 
-              <el-button v-if="isAuth('module:order:close') && scope.row.order_status.value == 1 && scope.row.pay_status.value == 1" type="warning" icon="el-icon-close" @click="$router.push({name: 'module_order_course_send', query: {order_id: scope.row.id, member_id: scope.row.member_id}})">
-                {{ $t('order.close') }}
-              </el-button>
-
-              <el-button v-if="isAuth('module:order:cancel') && (scope.row.order_status.value == 0 || scope.row.order_status.value == 1) && scope.row.pay_status.value == 1" type="warning" icon="el-icon-switch-button" @click="handleCancel(scope.row.id)">
+              <el-button v-if="isAuth('module:order:cancel') && scope.row.pay_status.value == 0 && scope.row.order_status.value != 3" type="warning" icon="el-icon-switch-button" @click="handleCancel(scope.row.id)">
                 {{ $t('order.cancel') }}
               </el-button>
 
@@ -149,6 +151,10 @@
     data() {
       return {
         model: 'order',
+        payList: [
+          {'id': 0, 'title': '待支付'},
+          {'id': 1, 'title': '已支付'},
+        ],
         orderList: [
           {'id': 0, 'title': '待学习'},
           {'id': 1, 'title': '学习中'},
@@ -159,6 +165,8 @@
           'order_no',
           'courseware_title',
           'member_username',
+          'pay_status',
+          'order_status',
         ]
       };
     },

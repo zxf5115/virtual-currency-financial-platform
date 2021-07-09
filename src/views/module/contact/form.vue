@@ -119,7 +119,7 @@
         })
       },
       // 表单提交
-      dataFormSubmit () {console.log(1);
+      dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
