@@ -71,14 +71,14 @@
           </el-table-column>
 
           <el-table-column :label="$t('member.vip_title')">
-            <template slot-scope="scope" v-if="scope.row.vip && scope.row.vip.vip">
-              {{ scope.row.vip.vip.title }}
+            <template slot-scope="scope" v-if="scope.row.vip[0]">
+              {{ scope.row.vip[0].title || '' }}
             </template>
           </el-table-column>
 
           <el-table-column :label="$t('member.vip_end_time')">
-            <template slot-scope="scope" v-if="scope.row.vip">
-              {{ scope.row.vip.end_time }}
+            <template slot-scope="scope" v-if="scope.row.vip_relevance">
+              {{ scope.row.vip_relevance.end_time }}
             </template>
           </el-table-column>
 
@@ -88,26 +88,45 @@
             </template>
           </el-table-column>
 
-          <el-table-column :label="$t('common.handle')" fixed="right" width="460">
+          <el-table-column :label="$t('member.certification_status')">
+            <template slot-scope="scope">
+              <span v-if="scope.row.certification">
+                {{ scope.row.certification.certification_status.text }}
+              </span>
+              <span v-else>
+                {{ '待提交' }}
+              </span>
+            </template>
+          </el-table-column>
+
+          <el-table-column :label="$t('member.audit_status')">
+            <template slot-scope="scope">
+              {{ scope.row.audit_status.text }}
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="status" :label="$t('member.status')" width="100">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.status.value"
+                :active-value="1"
+                :inactive-value="2"
+                @change="handleStatus($event, scope.row.id, 'status')">
+              </el-switch>
+            </template>
+          </el-table-column>
+
+          <el-table-column :label="$t('common.handle')" fixed="right" width="380">
             <template slot-scope="scope">
               <el-button v-if="isAuth('module:member:view')" type="info" icon="el-icon-view" @click="$router.push({name: 'module_member_view', query: {id: scope.row.id}})">
                 {{ $t('common.view') }}
               </el-button>
 
-              <el-button v-if="isAuth('module:member:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_member_form', query: {id: scope.row.id}})">
+              <el-button v-if="isAuth('module:member:form') && 1 != scope.row.audit_status.value" type="warning" icon="el-icon-check" @click="$router.push({name: 'module_member_form', query: {id: scope.row.id}})">
                 {{ $t('common.audit') }}
               </el-button>
 
-              <el-button v-if="isAuth('module:member:enable')" :type="scope.row.status.value == 2 ? 'danger' : 'success'" :icon="scope.row.status.value == 1 ? 'el-icon-check' : 'el-icon-close'" @click="enableHandle(scope.row.id, scope.row.status.value)">
-                <span v-if="scope.row.status.value == 1">
-                  {{ $t('member.enable') }}
-                </span>
-                <span v-else>
-                  {{ $t('member.disable') }}
-                </span>
-              </el-button>
-
-              <el-button v-if="isAuth('module:member:certification')" type="warning" icon="el-icon-edit" @click="$router.push({name: 'module_member_certification', query: {id: scope.row.id}})">
+              <el-button v-if="isAuth('module:member:certification') && scope.row.certification && 1 != scope.row.certification.certification_status.value" type="warning" icon="el-icon-edit" @click="$router.push({name: 'module_member_certification', query: {id: scope.row.id}})">
                 {{ $t('common.certification') }}
               </el-button>
 
@@ -148,39 +167,29 @@
       };
     },
     methods: {
-      // 禁用（解禁）学员账户
-      enableHandle (id, status) {
-        let message = '您确定要解禁当前学员的资产？'
-
-        if(1 == status)
-        {
-          message = '您确定要禁用当前学员的资产？'
-        }
-
-        this.$confirm(message, this.$t('common.prompt'), {
-          confirmButtonText: this.$t('common.confirm'),
-          cancelButtonText: this.$t('common.cancel'),
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/'+this.model+'/enable'),
-            method: 'post',
-            data: {id: id}
-          }).then(({data}) => {
-            if (data && data.status === 200) {
-              this.$message({
-                message: this.$t('common.handle_success'),
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(this.$t(data.message))
-            }
-          })
-        }).catch(() => {})
+      handleStatus($event, id, field) {
+        this.$http({
+          url: this.$http.adornUrl('/member/status'),
+          method: 'post',
+          data: {
+            id: id,
+            field: field,
+            value: $event
+          }
+        }).then(({data}) => {
+          if (data && data.status === 200) {
+            this.$message({
+              message: this.$t('common.handle_success'),
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.getDataList()
+              }
+            })
+          } else {
+            this.$message.error(this.$t(data.message))
+          }
+        })
       }
     },
     created() {

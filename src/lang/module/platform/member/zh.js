@@ -25,7 +25,7 @@ export const member = {
   vip_title: '会员类型',
   vip_end_time: '到期时间',
   asset_money: '账户余额',
-
+  audit_status: '审核状态',
   status: '账号状态',
   last_login_time: '最后登录时间',
   create_time: '注册时间',

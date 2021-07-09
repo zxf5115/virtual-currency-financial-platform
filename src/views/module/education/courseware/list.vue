@@ -137,7 +137,6 @@
     },
     methods: {
        handleStatus($event, id, field) {
-
         this.$http({
           url: this.$http.adornUrl('/education/courseware/status'),
           method: 'post',

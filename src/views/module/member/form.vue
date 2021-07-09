@@ -33,8 +33,8 @@
             <el-input v-model="dataForm.nickname" :placeholder="$t('common.please_input') + $t('member.nickname')"></el-input>
           </el-form-item>
 
-          <el-form-item :label="$t('member.status')" prop="status">
-            <el-switch v-model="dataForm.status" active-value="1" :active-text="$t('common.enable')" inactive-value="2" :inactive-text="$t('common.disable')">
+          <el-form-item :label="$t('member.audit_status')" prop="audit_status">
+            <el-switch v-model="dataForm.audit_status" :active-value="1" :active-text="$t('common.pass')" :inactive-value="2" :inactive-text="$t('common.no_pass')">
             </el-switch>
           </el-form-item>
 
@@ -66,7 +66,7 @@
           avatar: '',
           username: '',
           nickname: '',
-          status: '1',
+          audit_status: 1,
         },
         dataRule:
         {
@@ -95,10 +95,10 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
-                this.dataForm.avatar   = data.data.avatar
-                this.dataForm.username = data.data.username
-                this.dataForm.nickname = data.data.nickname
-                this.dataForm.status   = data.data.status.value + ''
+                this.dataForm.avatar       = data.data.avatar
+                this.dataForm.username     = data.data.username
+                this.dataForm.nickname     = data.data.nickname
+                this.dataForm.audit_status = data.data.audit_status.value
               }
             })
           }
@@ -116,7 +116,7 @@
                 'avatar': this.dataForm.avatar,
                 'username': this.dataForm.username,
                 'nickname': this.dataForm.nickname,
-                'status': this.dataForm.status,
+                'audit_status': this.dataForm.audit_status,
               })
             }).then(({data}) => {
               if (data && data.status === 200) {

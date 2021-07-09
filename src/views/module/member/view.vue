@@ -64,15 +64,15 @@
               <el-row>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.vip_title')" label-width="100">
-                    <span v-if="dataForm.vip && dataForm.vip.vip">
-                      {{ dataForm.vip.vip.title }}
+                    <span v-if="dataForm.vip && dataForm.vip[0]">
+                      {{ dataForm.vip[0].title }}
                     </span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
                   <el-form-item :label="$t('member.vip_end_time')" label-width="100">
-                    <span v-if="dataForm.vip">
-                      {{ dataForm.vip.end_time }}
+                    <span v-if="dataForm.vip_relevance">
+                      {{ dataForm.vip_relevance.end_time }}
                     </span>
                   </el-form-item>
                 </el-col>

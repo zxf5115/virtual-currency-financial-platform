@@ -258,10 +258,10 @@
     {
       return {
         model: 'member',
-        personal: 'box-card mt10',
-        company: 'box-card mt10',
-        project: 'box-card mt10',
-        certification: 'box-card mt10',
+        personal: 'box-card mt10 display',
+        company: 'box-card mt10 display',
+        project: 'box-card mt10 display',
+        certification: 'box-card mt10 display',
         dataForm:
         {
           id: 0,
@@ -324,9 +324,9 @@
                 this.dataForm.certification.certification_status = data.data.certification.certification_status.value + '' || ''
                 this.dataForm.certification.certification_content = data.data.certification.certification_content || ''
 
-                if(1 == this.dataForm.certification.certification_status)
+                if(0 == this.dataForm.certification.certification_status)
                 {
-                  this.certification = 'box-card mt10 display'
+                  this.certification = 'box-card mt10'
                 }
 
 
@@ -336,24 +336,15 @@
 
                   if(1 == type)
                   {
-                    this.company = 'box-card mt10 display'
-                    this.project = 'box-card mt10 display'
+                    this.personal = 'box-card mt10'
                   }
                   else if(2 == type)
                   {
-                    this.personal = 'box-card mt10 display'
-                    this.project = 'box-card mt10 display'
+                    this.company = 'box-card mt10'
                   }
                   else if(3 == type)
                   {
-                    this.personal = 'box-card mt10 display'
-                    this.company = 'box-card mt10 display'
-                  }
-                  else
-                  {
-                    this.personal = 'box-card mt10 display'
-                    this.company = 'box-card mt10 display'
-                    this.project = 'box-card mt10 display'
+                    this.project = 'box-card mt10'
                   }
                 }
               }
