@@ -32,12 +32,17 @@
             <editor ref="editor" :value="dataForm.content"></editor>
           </el-form-item>
 
-          <el-form-item :label="$t('information.bullish_total')" prop="bullish_total">
-            <el-input-number :placeholder="$t('information.bullish_total')" :min="0" v-model="dataForm.bullish_total"></el-input-number>
+          <el-form-item :label="$t('flash.bullish_total')" prop="bullish_total">
+            <el-input-number :placeholder="$t('flash.bullish_total')" :min="0" v-model="dataForm.bullish_total"></el-input-number>
           </el-form-item>
 
-          <el-form-item :label="$t('information.bearish_total')" prop="bearish_total">
-            <el-input-number :placeholder="$t('information.bearish_total')" :min="0" v-model="dataForm.bearish_total"></el-input-number>
+          <el-form-item :label="$t('flash.bearish_total')" prop="bearish_total">
+            <el-input-number :placeholder="$t('flash.bearish_total')" :min="0" v-model="dataForm.bearish_total"></el-input-number>
+          </el-form-item>
+
+          <el-form-item :label="$t('flash.audit_status')" prop="audit_status">
+            <el-switch v-model="dataForm.audit_status" :active-value="1" :active-text="$t('common.pass')" :inactive-value="2" :inactive-text="$t('common.no_pass')">
+            </el-switch>
           </el-form-item>
 
           <el-form-item>
@@ -76,6 +81,7 @@
           content: '',
           bullish_total: 0,
           bearish_total: 0,
+          audit_status: 0,
         },
         dataRule:
         {
@@ -107,6 +113,7 @@
                 this.dataForm.content       = data.data.content
                 this.dataForm.bullish_total = data.data.bullish_total
                 this.dataForm.bearish_total = data.data.bearish_total
+                this.dataForm.audit_status  = data.data.audit_status
               }
             })
           }
@@ -126,6 +133,7 @@
                 'content': this.$refs.editor.content,
                 'bullish_total': this.dataForm.bullish_total,
                 'bearish_total': this.dataForm.bearish_total,
+                'audit_status': this.dataForm.audit_status,
               })
             }).then(({data}) => {
               if (data && data.status === 200) {

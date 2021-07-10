@@ -54,6 +54,17 @@
           <el-table-column prop="sort" :label="$t('common.sort')">
           </el-table-column>
 
+          <el-table-column :label="$t('common.status')" width="100">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.status.value"
+                :active-value="1"
+                :inactive-value="2"
+                @change="handleStatus($event, scope.row.id, 'status')">
+              </el-switch>
+            </template>
+          </el-table-column>
+
           <el-table-column :label="$t('common.handle')" fixed="right" width="200">
             <template slot-scope="scope">
               <el-button v-if="isAuth('module:advertising:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_advertising_form', query: {id: scope.row.id}})">

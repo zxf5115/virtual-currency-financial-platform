@@ -97,6 +97,9 @@
           mobile: [
             { required: true, message: this.$t('courseware.teacher.rules.mobile.require'), trigger: 'blur' }
           ],
+          position: [
+            { required: true, message: this.$t('courseware.teacher.rules.position.require'), trigger: 'blur' }
+          ],
         }
       };
     },

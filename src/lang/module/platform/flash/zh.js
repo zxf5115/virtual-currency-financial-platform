@@ -7,6 +7,9 @@ export const flash = {
   content: '快讯内容',
   bullish_total: '利多总数',
   bearish_total: '利空总数',
+  is_recommend: '是否推荐',
+  audit_status: '审核状态',
+  admin: '上传人',
 
   rules: {
     title: {

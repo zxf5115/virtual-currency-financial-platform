@@ -38,6 +38,10 @@
             </el-input>
           </div>
           <div>
+            <el-date-picker format="yyyy-MM-dd" v-model="dataForm.create_time" type="daterange" :range-separator="$t('common.to')" :start-placeholder="$t('common.start_time')" :end-placeholder="$t('common.end_time')" clearable>
+            </el-date-picker>
+          </div>
+          <div>
             <el-button icon="el-icon-search" @click="getDataList(true)">
               {{ $t('common.search') }}
             </el-button>
@@ -125,6 +129,7 @@
         dataForm: [
           'category_id',
           'title',
+          'create_time',
         ]
       };
     },

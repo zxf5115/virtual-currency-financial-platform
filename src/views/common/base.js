@@ -115,6 +115,31 @@ export default {
         this.dataListLoading = false
       })
     },
+    // 改变状态
+    handleStatus($event, id, field) {
+      this.$http({
+        url: this.$http.adornUrl('/'+this.model+'/status'),
+        method: 'post',
+        data: {
+          id: id,
+          field: field,
+          value: $event
+        }
+      }).then(({data}) => {
+        if (data && data.status === 200) {
+          this.$message({
+            message: this.$t('common.handle_success'),
+            type: 'success',
+            duration: 1500,
+            onClose: () => {
+              this.getDataList()
+            }
+          })
+        } else {
+          this.$message.error(this.$t(data.message))
+        }
+      })
+    },
     // 删除
     deleteHandle (id) {
       var ids = id ? [id] : this.dataListSelections.map(item => {

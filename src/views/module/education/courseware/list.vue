@@ -19,8 +19,18 @@
       <div class="admin_main_block_top">
         <div class="admin_main_block_left">
           <div>
+            <el-select v-model="dataForm.category_id" :placeholder="$t('common.please_select') + $t('courseware.course_category')" clearable>
+              <el-option :label="$t('common.all')" value=""></el-option>
+              <el-option v-for="(v,k) in categoryList" :label="v.title" :key="k" :value="v.id"></el-option>
+            </el-select>
+          </div>
+          <div>
             <el-input v-model="dataForm.title" :placeholder="$t('common.please_input') + $t('courseware.title')" clearable>
             </el-input>
+          </div>
+          <div>
+            <el-date-picker format="yyyy-MM-dd" v-model="dataForm.create_time" type="daterange" :range-separator="$t('common.to')" :start-placeholder="$t('common.start_time')" :end-placeholder="$t('common.end_time')" clearable>
+            </el-date-picker>
           </div>
           <div>
             <el-button icon="el-icon-search" @click="getDataList(true)">
@@ -56,6 +66,9 @@
           </el-table-column>
 
           <el-table-column prop="sort" :label="$t('common.sort')" width="100">
+          </el-table-column>
+
+          <el-table-column prop="create_time" :label="$t('common.create_time')" width="140">
           </el-table-column>
 
           <el-table-column :label="$t('courseware.is_shelf')" width="100">
@@ -130,36 +143,30 @@
     data() {
       return {
         model: 'education/courseware',
+        categoryList: [],
         dataForm: [
-          'title'
+          'category_id',
+          'title',
+          'create_time',
         ]
       };
     },
     methods: {
-       handleStatus($event, id, field) {
+      loadCategoryList () {
         this.$http({
-          url: this.$http.adornUrl('/education/courseware/status'),
-          method: 'post',
-          data: {
-            id: id,
-            field: field,
-            value: $event
-          }
+          url: this.$http.adornUrl('/education/courseware/category/select'),
+          method: 'get'
         }).then(({data}) => {
           if (data && data.status === 200) {
-            this.$message({
-              message: this.$t('common.handle_success'),
-              type: 'success',
-              duration: 1500,
-              onClose: () => {
-                this.getDataList()
-              }
-            })
+            this.categoryList = data.data
           } else {
             this.$message.error(this.$t(data.message))
           }
         })
-       }
+      }
+    },
+    mounted () {
+      this.loadCategoryList();
     },
     created() {
       this.getDataList()

@@ -31,11 +31,9 @@
 
           <el-table-column prop="picture" :label="$t('courseware.teacher.picture')">
             <template slot-scope="scope">
-              <el-image style="width: 40px;" :src="scope.row.picture">
-                <div slot="error" class="image-slot">
-                  <i class="el-icon-picture-outline"></i>
-                </div>
-              </el-image>
+              <el-avatar :size="30" :src="scope.row.picture">
+                <img src="@/assets/images/default/circle.png"/>
+              </el-avatar>
             </template>
           </el-table-column>
 

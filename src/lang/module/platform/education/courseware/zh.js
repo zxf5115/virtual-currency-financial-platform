@@ -98,6 +98,9 @@ export const courseware = {
       picture: {
         require: '讲师头像不能为空',
       },
+      position: {
+        require: '讲师头衔不能为空',
+      }
     },
   },
 }

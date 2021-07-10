@@ -8,19 +8,6 @@
               {{ $t('common.batch_delete') }}
             </el-button>
           </div>
-          <div class="mr10">
-            <el-dropdown type="primary">
-              <el-button type="primary">
-                {{ $t('member.push') }}
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">{{ $t('member.push_course') }}</el-dropdown-item>
-                <el-dropdown-item command="b">{{ $t('member.push_activity') }}</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-
-          </div>
         </div>
       </div>
 
@@ -88,14 +75,15 @@
             </template>
           </el-table-column>
 
+          <el-table-column :label="$t('member.certification_info')">
+            <template slot-scope="scope" v-if="scope.row.certification">
+              {{ scope.row.certification.type.text }}
+            </template>
+          </el-table-column>
+
           <el-table-column :label="$t('member.certification_status')">
-            <template slot-scope="scope">
-              <span v-if="scope.row.certification">
-                {{ scope.row.certification.certification_status.text }}
-              </span>
-              <span v-else>
-                {{ '待提交' }}
-              </span>
+            <template slot-scope="scope" v-if="scope.row.certification">
+              {{ scope.row.certification.certification_status.text }}
             </template>
           </el-table-column>
 
