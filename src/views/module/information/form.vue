@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <div class="admin_form_main">
+      <div class="admin_form_main color">
         <el-form label-width="140px" ref="dataForm" :model="dataForm" :rules="dataRule">
 
           <el-form-item :label="$t('information.category.title')" prop="category_id">
@@ -60,6 +60,28 @@
             <el-input-number :placeholder="$t('information.read_total')" :min="0" v-model="dataForm.read_total"></el-input-number>
           </el-form-item>
 
+          <el-form-item :label="$t('information.is_top')" prop="is_top">
+            <el-switch v-model="dataForm.is_top" :active-value="1" :inactive-value="2" :active-text="$t('common.yes')" :inactive-text="$t('common.no')"></el-switch>
+          </el-form-item>
+
+          <el-form-item :label="$t('information.is_recommend')" prop="is_recommend">
+            <el-switch v-model="dataForm.is_recommend" :active-value="1" :inactive-value="2" :active-text="$t('common.yes')" :inactive-text="$t('common.no')"></el-switch>
+          </el-form-item>
+
+          <el-form-item :label="$t('information.is_comment')" prop="is_comment">
+            <el-switch v-model="dataForm.is_comment" :active-value="1" :inactive-value="2" :active-text="$t('common.yes')" :inactive-text="$t('common.no')"></el-switch>
+          </el-form-item>
+
+          <el-form-item :label="$t('common.audit_status')" prop="audit_status">
+            <el-switch v-model="dataForm.audit_status" :active-value="1" :active-text="$t('common.pass')" :inactive-value="2" :inactive-text="$t('common.no_pass')">
+            </el-switch>
+          </el-form-item>
+
+          <el-form-item :label="$t('common.status')" prop="status">
+            <el-switch v-model="dataForm.status" :active-value="1" :active-text="$t('common.enable')" :inactive-value="2" :inactive-text="$t('common.disable')">
+            </el-switch>
+          </el-form-item>
+
           <el-form-item>
             <el-button v-if="isAuth('module:information:handle')" type="primary" @click="dataFormSubmit()">
               {{ $t('common.confirm') }}
@@ -101,6 +123,11 @@
           source: '',
           author: '',
           read_total: 0,
+          is_top: 2,
+          is_recommend: 2,
+          is_comment: 2,
+          audit_status: 0,
+          status: 1,
         },
         dataRule:
         {
@@ -130,13 +157,18 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
-                this.dataForm.category_id = data.data.category_id
-                this.dataForm.title       = data.data.title
-                this.dataForm.picture     = data.data.picture
-                this.dataForm.content     = data.data.content
-                this.dataForm.source      = data.data.source
-                this.dataForm.author      = data.data.author
-                this.dataForm.read_total  = data.data.read_total
+                this.dataForm.category_id  = data.data.category_id
+                this.dataForm.title        = data.data.title
+                this.dataForm.picture      = data.data.picture
+                this.dataForm.content      = data.data.content
+                this.dataForm.source       = data.data.source
+                this.dataForm.author       = data.data.author
+                this.dataForm.read_total   = data.data.read_total
+                this.dataForm.is_top       = data.data.is_top.value
+                this.dataForm.is_recommend = data.data.is_recommend.value
+                this.dataForm.is_comment   = data.data.is_comment.value
+                this.dataForm.audit_status = data.data.audit_status.value
+                this.dataForm.status       = data.data.status.value
 
                 if(data.data.label)
                 {
@@ -169,6 +201,11 @@
                 'source': this.dataForm.source,
                 'author': this.dataForm.author,
                 'read_total': this.dataForm.read_total,
+                'is_top': this.dataForm.is_top,
+                'is_recommend': this.dataForm.is_recommend,
+                'is_comment': this.dataForm.is_comment,
+                'audit_status': this.dataForm.audit_status,
+                'status': this.dataForm.status,
               })
             }).then(({data}) => {
               if (data && data.status === 200) {
@@ -199,7 +236,7 @@
       },
       loadLabelList () {
         this.$http({
-          url: this.$http.adornUrl('/label/select'),
+          url: this.$http.adornUrl('/information/label/select'),
           method: 'get'
         }).then(({data}) => {
           if (data && data.status === 200) {

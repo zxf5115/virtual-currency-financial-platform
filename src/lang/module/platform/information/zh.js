@@ -9,6 +9,9 @@ export const information = {
   source: '资讯来源',
   author: '资讯作者',
   read_total: '阅读总数',
+  is_top: '是否置顶',
+  is_recommend: '是否推荐',
+  is_comment: '是否评论',
 
   enable: '已推荐',
   disable: '未推荐',
@@ -48,6 +51,19 @@ export const information = {
     rules: {
       title: {
         require: '资讯标签标题不能为空',
+      }
+    },
+  },
+  // 资讯敏感词
+  sensitive: {
+    list: '敏感词列表',
+    from: '敏感词操作',
+
+    title: '敏感词标题',
+
+    rules: {
+      title: {
+        require: '敏感词标题不能为空',
       }
     },
   },

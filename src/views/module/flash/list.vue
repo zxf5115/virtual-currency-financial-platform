@@ -108,8 +108,8 @@
 
           <el-table-column :label="$t('common.handle')" fixed="right" width="220">
             <template slot-scope="scope">
-              <el-button v-if="isAuth('module:flash:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_flash_form', query: {id : scope.row.id}})">
-                {{ $t('common.update') }}
+              <el-button v-if="isAuth('module:flash:form')" type="warning" icon="el-icon-check" @click="$router.push({name: 'module_flash_form', query: {id : scope.row.id}})">
+                {{ $t('common.audit') }}
               </el-button>
 
               <el-button v-if="isAuth('module:flash:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">

@@ -15,6 +15,16 @@
               {{ $t('information.category.list') }}
             </el-button>
           </div>
+          <div>
+            <el-button v-if="isAuth('module:information:label:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_information_label_list'})">
+              {{ $t('information.label.list') }}
+            </el-button>
+          </div>
+          <div>
+            <el-button v-if="isAuth('module:information:sensitive:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_information_sensitive_list'})">
+              {{ $t('information.sensitive.list') }}
+            </el-button>
+          </div>
         </div>
         <div class="admin_main_block_right">
           <div>
@@ -38,6 +48,12 @@
             </el-input>
           </div>
           <div>
+            <el-select v-model="dataForm.audit_status" :placeholder="$t('common.please_select') + $t('flash.audit_status')" clearable>
+              <el-option :label="$t('common.all')" value=""></el-option>
+              <el-option v-for="(v,k) in auditList" :label="v.title" :key="k" :value="v.id"></el-option>
+            </el-select>
+          </div>
+          <div>
             <el-date-picker format="yyyy-MM-dd" v-model="dataForm.create_time" type="daterange" :range-separator="$t('common.to')" :start-placeholder="$t('common.start_time')" :end-placeholder="$t('common.end_time')" clearable>
             </el-date-picker>
           </div>
@@ -57,7 +73,7 @@
           <el-table-column prop="id" label="#" width="70px">
           </el-table-column>
 
-          <el-table-column :label="$t('information.category.title')">
+          <el-table-column :label="$t('information.category.title')" width="120">
             <template slot-scope="scope">
               <span v-if="scope.row.category">
                 {{ scope.row.category.title }}
@@ -68,31 +84,72 @@
           <el-table-column prop="title" :label="$t('information.title')">
           </el-table-column>
 
-          <el-table-column prop="source" :label="$t('information.source')">
+          <el-table-column prop="source" :label="$t('information.source')" width="120">
           </el-table-column>
 
-          <el-table-column prop="author" :label="$t('information.author')">
+          <el-table-column prop="author" :label="$t('information.author')" width="100">
           </el-table-column>
 
-          <el-table-column prop="read_total" :label="$t('information.read_total')">
+          <el-table-column prop="read_total" :label="$t('information.read_total')" width="80">
+          </el-table-column>
+
+          <el-table-column :label="$t('common.audit_status')" width="100">
+            <template slot-scope="scope">
+              {{ scope.row.audit_status.text }}
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="is_top" :label="$t('information.is_top')" width="100">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.is_top.value"
+                :active-value="1"
+                :inactive-value="2"
+                @change="handleStatus($event, scope.row.id, 'is_top')">
+              </el-switch>
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="is_recommend" :label="$t('information.is_recommend')" width="100">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.is_recommend.value"
+                :active-value="1"
+                :inactive-value="2"
+                @change="handleStatus($event, scope.row.id, 'is_recommend')">
+              </el-switch>
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="is_comment" :label="$t('information.is_comment')" width="100">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.is_comment.value"
+                :active-value="1"
+                :inactive-value="2"
+                @change="handleStatus($event, scope.row.id, 'is_comment')">
+              </el-switch>
+            </template>
+          </el-table-column>
+
+          <el-table-column :label="$t('common.status')" width="100">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.status.value"
+                :active-value="1"
+                :inactive-value="2"
+                @change="handleStatus($event, scope.row.id, 'status')">
+              </el-switch>
+            </template>
           </el-table-column>
 
           <el-table-column prop="create_time" :label="$t('common.create_time')" width="150">
           </el-table-column>
 
-          <el-table-column :label="$t('common.handle')" fixed="right" width="300">
+          <el-table-column :label="$t('common.handle')" fixed="right" width="200">
             <template slot-scope="scope">
-              <el-button v-if="isAuth('module:information:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_information_form', query: {id : scope.row.id}})">
-                {{ $t('common.update') }}
-              </el-button>
-
-              <el-button v-if="isAuth('module:information:recommend')" :type="scope.row.is_recommend.value == 0 ? 'danger' : 'success'" :icon="scope.row.is_recommend.value == 1 ? 'el-icon-check' : 'el-icon-close'" @click="enableHandle(scope.row.id, scope.row.is_recommend.value)">
-                <span v-if="scope.row.is_recommend.value == 1">
-                  {{ $t('information.enable') }}
-                </span>
-                <span v-else>
-                  {{ $t('information.disable') }}
-                </span>
+              <el-button v-if="isAuth('module:information:form')" type="warning" icon="el-icon-check" @click="$router.push({name: 'module_information_form', query: {id : scope.row.id}})">
+                {{ $t('common.audit') }}
               </el-button>
 
               <el-button v-if="isAuth('module:information:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
@@ -126,9 +183,11 @@
         model: 'information',
         category_id: 0,
         categoryList: [],
+        auditList: [],
         dataForm: [
           'category_id',
           'title',
+          'audit_status',
           'create_time',
         ]
       };
@@ -146,43 +205,22 @@
           }
         })
       },
-      // 停用（启用）课程类型
-      enableHandle (id, status) {
-        let message = '您确定要推荐当前资讯？'
-
-        if(1 == status)
-        {
-          message = '您确定要取消推荐当前资讯？'
-        }
-
-        this.$confirm(message, this.$t('common.prompt'), {
-          confirmButtonText: this.$t('common.confirm'),
-          cancelButtonText: this.$t('common.cancel'),
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/'+this.model+'/recommend'),
-            method: 'post',
-            data: {id: id}
-          }).then(({data}) => {
-            if (data && data.status === 200) {
-              this.$message({
-                message: this.$t('common.handle_success'),
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(this.$t(data.message))
-            }
-          })
-        }).catch(() => {})
-      }
+      loadAuditList () {
+        this.$http({
+          url: this.$http.adornUrl('/common/single/audit'),
+          method: 'get'
+        }).then(({data}) => {
+          if (data && data.status === 200) {
+            this.auditList = data.data
+          } else {
+            this.$message.error(this.$t(data.message))
+          }
+        })
+      },
     },
     mounted () {
       this.loadCategoryList();
+      this.loadAuditList();
     },
     created() {
       this.dataForm.category_id = this.$route.query.category_id;
