@@ -146,10 +146,14 @@
           <el-table-column prop="create_time" :label="$t('common.create_time')" width="150">
           </el-table-column>
 
-          <el-table-column :label="$t('common.handle')" fixed="right" width="200">
+          <el-table-column :label="$t('common.handle')" fixed="right" width="280">
             <template slot-scope="scope">
               <el-button v-if="isAuth('module:information:form')" type="warning" icon="el-icon-check" @click="$router.push({name: 'module_information_form', query: {id : scope.row.id}})">
                 {{ $t('common.audit') }}
+              </el-button>
+
+              <el-button v-if="isAuth('module:information:comment:list')" type="primary" icon="el-icon-more" @click="$router.push({name: 'module_information_comment_list', query: {id : scope.row.id}})">
+                {{ $t('information.comment_info') }}
               </el-button>
 
               <el-button v-if="isAuth('module:information:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">

@@ -38,6 +38,10 @@
             </el-input>
           </div>
           <div>
+            <el-date-picker format="yyyy-MM-dd" v-model="dataForm.create_time" type="daterange" :range-separator="$t('common.to')" :start-placeholder="$t('common.start_time')" :end-placeholder="$t('common.end_time')" clearable>
+            </el-date-picker>
+          </div>
+          <div>
             <el-button icon="el-icon-search" @click="getDataList(true)">
               {{ $t('common.search') }}
             </el-button>
@@ -67,22 +71,35 @@
           <el-table-column prop="author" :label="$t('community.author')">
           </el-table-column>
 
+          <el-table-column prop="is_hot" :label="$t('community.is_hot')" width="100">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.is_hot.value"
+                :active-value="1"
+                :inactive-value="2"
+                @change="handleStatus($event, scope.row.id, 'is_hot')">
+              </el-switch>
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="is_recommend" :label="$t('community.is_recommend')" width="100">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.is_recommend.value"
+                :active-value="1"
+                :inactive-value="2"
+                @change="handleStatus($event, scope.row.id, 'is_recommend')">
+              </el-switch>
+            </template>
+          </el-table-column>
+
           <el-table-column prop="create_time" :label="$t('common.create_time')" width="150">
           </el-table-column>
 
-          <el-table-column :label="$t('common.handle')" fixed="right" width="300">
+          <el-table-column :label="$t('common.handle')" fixed="right" width="200">
             <template slot-scope="scope">
               <el-button v-if="isAuth('module:community:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_community_form', query: {id : scope.row.id}})">
                 {{ $t('common.update') }}
-              </el-button>
-
-              <el-button v-if="isAuth('module:community:hot')" :type="scope.row.is_hot == 0 ? 'danger' : 'success'" :icon="scope.row.is_hot == 1 ? 'el-icon-check' : 'el-icon-close'" @click="enableHandle(scope.row.id, scope.row.is_hot)">
-                <span v-if="scope.row.is_hot == 1">
-                  {{ $t('community.enable') }}
-                </span>
-                <span v-else>
-                  {{ $t('community.disable') }}
-                </span>
               </el-button>
 
               <el-button v-if="isAuth('module:community:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
@@ -119,6 +136,7 @@
         dataForm: [
           'category_id',
           'title',
+          'create_time',
         ]
       };
     },
@@ -135,40 +153,6 @@
           }
         })
       },
-      // 停用（启用）课程类型
-      enableHandle (id, status) {
-        let message = '您确定要推荐当前资讯？'
-
-        if(1 == status)
-        {
-          message = '您确定要取消推荐当前资讯？'
-        }
-
-        this.$confirm(message, this.$t('common.prompt'), {
-          confirmButtonText: this.$t('common.confirm'),
-          cancelButtonText: this.$t('common.cancel'),
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/'+this.model+'/hot'),
-            method: 'post',
-            data: {id: id}
-          }).then(({data}) => {
-            if (data && data.status === 200) {
-              this.$message({
-                message: this.$t('common.handle_success'),
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(this.$t(data.message))
-            }
-          })
-        }).catch(() => {})
-      }
     },
     mounted () {
       this.loadCategoryList();

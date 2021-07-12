@@ -113,7 +113,7 @@
                 this.dataForm.content       = data.data.content
                 this.dataForm.bullish_total = data.data.bullish_total
                 this.dataForm.bearish_total = data.data.bearish_total
-                this.dataForm.audit_status  = data.data.audit_status
+                this.dataForm.audit_status  = data.data.audit_status.value
               }
             })
           }

@@ -46,6 +46,14 @@
             <el-input :placeholder="$t('community.author')" v-model="dataForm.author"></el-input>
           </el-form-item>
 
+          <el-form-item :label="$t('community.is_hot')" prop="is_hot">
+            <el-switch v-model="dataForm.is_hot" :active-value="1" :inactive-value="2" :active-text="$t('common.yes')" :inactive-text="$t('common.no')"></el-switch>
+          </el-form-item>
+
+          <el-form-item :label="$t('community.is_recommend')" prop="is_recommend">
+            <el-switch v-model="dataForm.is_recommend" :active-value="1" :inactive-value="2" :active-text="$t('common.yes')" :inactive-text="$t('common.no')"></el-switch>
+          </el-form-item>
+
           <el-form-item>
             <el-button v-if="isAuth('module:community:handle')" type="primary" @click="dataFormSubmit()">
               {{ $t('common.confirm') }}
@@ -84,6 +92,8 @@
           content: '',
           author: '',
           read_total: 0,
+          is_hot: 2,
+          is_recommend: 2,
         },
         dataRule:
         {
@@ -113,11 +123,13 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
-                this.dataForm.category_id = data.data.category_id
-                this.dataForm.title       = data.data.title
-                this.dataForm.picture     = data.data.picture
-                this.dataForm.content     = data.data.content
-                this.dataForm.author      = data.data.author
+                this.dataForm.category_id  = data.data.category_id
+                this.dataForm.title        = data.data.title
+                this.dataForm.picture      = data.data.picture
+                this.dataForm.content      = data.data.content
+                this.dataForm.author       = data.data.author
+                this.dataForm.is_hot       = data.data.is_hot.value
+                this.dataForm.is_recommend = data.data.is_recommend.value
               }
             })
           }
@@ -138,6 +150,8 @@
                 'content': this.$refs.editor.content,
                 'author': this.dataForm.author,
                 'read_total': this.dataForm.read_total,
+                'is_hot': this.dataForm.is_hot,
+                'is_recommend': this.dataForm.is_recommend,
               })
             }).then(({data}) => {
               if (data && data.status === 200) {

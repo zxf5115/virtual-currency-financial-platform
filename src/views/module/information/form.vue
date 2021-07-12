@@ -18,79 +18,103 @@
       <div class="admin_form_main color">
         <el-form label-width="140px" ref="dataForm" :model="dataForm" :rules="dataRule">
 
-          <el-form-item :label="$t('information.category.title')" prop="category_id">
-            <el-select v-model="dataForm.category_id" :placeholder="$t('common.please_select')+$t('information.category.title')">
-              <el-option v-for="(v,k) in categoryList" :label="v.title" :key="k" :value="v.id"></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item :label="$t('information.label.title')" prop="label_id">
-            <el-select v-model="dataForm.label_id" :placeholder="$t('common.please_select')+$t('information.label.title')" multiple collapse-tags>
-              <el-option v-for="(v,k) in labelList" :label="v.title" :key="k" :value="v.id"></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item :label="$t('information.title')" prop="title">
-            <el-input :placeholder="$t('information.title')" v-model="dataForm.title"></el-input>
-          </el-form-item>
-
-          <el-form-item :label="$t('information.picture')" prop="picture">
-            <el-upload class="avatar-uploader" :action="this.$http.adornUrl('/file/picture')" :show-file-list="false" :headers="upload_headers" :on-success="handlePictureSuccess" :before-upload="beforePictureUpload">
-              <img v-if="dataForm.picture" :src="dataForm.picture" class="avatar-upload">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-            <div class="red">
-              上传图片分辨率为：355*170
+          <el-card class="box-card" shadow="never">
+            <div slot="header" class="clearfix">
+              <span>{{ $t('common.basic_info') }}</span>
             </div>
-          </el-form-item>
+            <div class="text item">
+              <el-form-item :label="$t('information.category.title')" prop="category_id">
+                <el-select v-model="dataForm.category_id" :placeholder="$t('common.please_select')+$t('information.category.title')">
+                  <el-option v-for="(v,k) in categoryList" :label="v.title" :key="k" :value="v.id"></el-option>
+                </el-select>
+              </el-form-item>
 
-          <el-form-item class="mavon" prop="content" :label="$t('information.content')">
-            <editor ref="editor" :value="dataForm.content"></editor>
-          </el-form-item>
+              <el-form-item :label="$t('information.label.title')" prop="label_id">
+                <el-select v-model="dataForm.label_id" :placeholder="$t('common.please_select')+$t('information.label.title')" multiple collapse-tags>
+                  <el-option v-for="(v,k) in labelList" :label="v.title" :key="k" :value="v.id"></el-option>
+                </el-select>
+              </el-form-item>
 
-          <el-form-item :label="$t('information.source')" prop="source">
-            <el-input :placeholder="$t('information.source')" v-model="dataForm.source"></el-input>
-          </el-form-item>
+              <el-form-item :label="$t('information.title')" prop="title">
+                <el-input :placeholder="$t('information.title')" v-model="dataForm.title"></el-input>
+              </el-form-item>
 
-          <el-form-item :label="$t('information.author')" prop="author">
-            <el-input :placeholder="$t('information.author')" v-model="dataForm.author"></el-input>
-          </el-form-item>
+              <el-form-item :label="$t('information.picture')" prop="picture">
+                <el-upload class="avatar-uploader" :action="this.$http.adornUrl('/file/picture')" :show-file-list="false" :headers="upload_headers" :on-success="handlePictureSuccess" :before-upload="beforePictureUpload">
+                  <img v-if="dataForm.picture" :src="dataForm.picture" class="avatar-upload">
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+                <div class="red">
+                  上传图片分辨率为：355*170
+                </div>
+              </el-form-item>
 
-          <el-form-item :label="$t('information.read_total')" prop="read_total">
-            <el-input-number :placeholder="$t('information.read_total')" :min="0" v-model="dataForm.read_total"></el-input-number>
-          </el-form-item>
+              <el-form-item class="mavon" prop="content" :label="$t('information.content')">
+                <editor ref="editor" :value="dataForm.content"></editor>
+              </el-form-item>
 
-          <el-form-item :label="$t('information.is_top')" prop="is_top">
-            <el-switch v-model="dataForm.is_top" :active-value="1" :inactive-value="2" :active-text="$t('common.yes')" :inactive-text="$t('common.no')"></el-switch>
-          </el-form-item>
+              <el-form-item :label="$t('information.source')" prop="source">
+                <el-input :placeholder="$t('information.source')" v-model="dataForm.source"></el-input>
+              </el-form-item>
 
-          <el-form-item :label="$t('information.is_recommend')" prop="is_recommend">
-            <el-switch v-model="dataForm.is_recommend" :active-value="1" :inactive-value="2" :active-text="$t('common.yes')" :inactive-text="$t('common.no')"></el-switch>
-          </el-form-item>
+              <el-form-item :label="$t('information.author')" prop="author">
+                <el-input :placeholder="$t('information.author')" v-model="dataForm.author"></el-input>
+              </el-form-item>
 
-          <el-form-item :label="$t('information.is_comment')" prop="is_comment">
-            <el-switch v-model="dataForm.is_comment" :active-value="1" :inactive-value="2" :active-text="$t('common.yes')" :inactive-text="$t('common.no')"></el-switch>
-          </el-form-item>
+              <el-form-item :label="$t('information.read_total')" prop="read_total">
+                <el-input-number :placeholder="$t('information.read_total')" :min="0" v-model="dataForm.read_total"></el-input-number>
+              </el-form-item>
 
-          <el-form-item :label="$t('common.audit_status')" prop="audit_status">
-            <el-switch v-model="dataForm.audit_status" :active-value="1" :active-text="$t('common.pass')" :inactive-value="2" :inactive-text="$t('common.no_pass')">
-            </el-switch>
-          </el-form-item>
+              <el-form-item :label="$t('information.is_top')" prop="is_top">
+                <el-switch v-model="dataForm.is_top" :active-value="1" :inactive-value="2" :active-text="$t('common.yes')" :inactive-text="$t('common.no')"></el-switch>
+              </el-form-item>
 
-          <el-form-item :label="$t('common.status')" prop="status">
-            <el-switch v-model="dataForm.status" :active-value="1" :active-text="$t('common.enable')" :inactive-value="2" :inactive-text="$t('common.disable')">
-            </el-switch>
-          </el-form-item>
+              <el-form-item :label="$t('information.is_recommend')" prop="is_recommend">
+                <el-switch v-model="dataForm.is_recommend" :active-value="1" :inactive-value="2" :active-text="$t('common.yes')" :inactive-text="$t('common.no')"></el-switch>
+              </el-form-item>
 
-          <el-form-item>
-            <el-button v-if="isAuth('module:information:handle')" type="primary" @click="dataFormSubmit()">
-              {{ $t('common.confirm') }}
-            </el-button>
-            <el-button @click="resetForm()">
-              {{ $t('common.reset') }}
-            </el-button>
-          </el-form-item>
+              <el-form-item :label="$t('information.is_comment')" prop="is_comment">
+                <el-switch v-model="dataForm.is_comment" :active-value="1" :inactive-value="2" :active-text="$t('common.yes')" :inactive-text="$t('common.no')"></el-switch>
+              </el-form-item>
 
+              <el-form-item :label="$t('common.audit_status')" prop="audit_status">
+                <el-switch v-model="dataForm.audit_status" :active-value="1" :active-text="$t('common.pass')" :inactive-value="2" :inactive-text="$t('common.no_pass')">
+                </el-switch>
+              </el-form-item>
+
+              <el-form-item :label="$t('common.status')" prop="status">
+                <el-switch v-model="dataForm.status" :active-value="1" :active-text="$t('common.enable')" :inactive-value="2" :inactive-text="$t('common.disable')">
+                </el-switch>
+              </el-form-item>
+            </div>
+          </el-card>
+          <el-card class="box-card mt10" shadow="never">
+            <div slot="header" class="clearfix">
+              <span>{{ $t('information.similar_info') }}</span>
+            </div>
+            <div class="text item">
+              <el-transfer
+                filterable
+                :props="props"
+                :titles="titles"
+                v-model="dataForm.similar_information_id"
+                :data="informationList">
+              </el-transfer>
+            </div>
+          </el-card>
+
+          <el-card class="box-card mt10" shadow="never">
+            <div class="text item">
+              <el-form-item>
+                <el-button v-if="isAuth('module:information:handle')" type="primary" @click="dataFormSubmit()">
+                  {{ $t('common.confirm') }}
+                </el-button>
+                <el-button @click="resetForm()">
+                  {{ $t('common.reset') }}
+                </el-button>
+              </el-form-item>
+            </div>
+          </el-card>
         </el-form>
       </div>
     </div>
@@ -111,6 +135,7 @@
         model: 'information',
         categoryList: [],
         labelList: [],
+        informationList: [],
         upload_headers:{},
         dataForm:
         {
@@ -128,6 +153,7 @@
           is_comment: 2,
           audit_status: 0,
           status: 1,
+          similar_information_id: [],
         },
         dataRule:
         {
@@ -137,7 +163,12 @@
           title: [
             { required: true, message: this.$t('information.rules.title.require'), trigger: 'blur' },
           ]
-        }
+        },
+        props: {
+          key: 'id',
+          label: 'title',
+        },
+        titles: ['全部资讯', '已选资讯'],
       };
     },
     methods:
@@ -173,10 +204,18 @@
                 if(data.data.label)
                 {
                   let label = data.data.label
-                  let s = []
 
                   label.forEach(res=>{
                     this.dataForm.label_id.push(res.id);
+                  });
+                }
+
+                if(data.data.similar)
+                {
+                  let similar = data.data.similar
+
+                  similar.forEach(res=>{
+                    this.dataForm.similar_information_id.push(res.similar_information_id);
                   });
                 }
               }
@@ -206,6 +245,7 @@
                 'is_comment': this.dataForm.is_comment,
                 'audit_status': this.dataForm.audit_status,
                 'status': this.dataForm.status,
+                'similar_information_id': this.dataForm.similar_information_id,
               })
             }).then(({data}) => {
               if (data && data.status === 200) {
@@ -246,6 +286,18 @@
           }
         })
       },
+      loadInformationList () {
+        this.$http({
+          url: this.$http.adornUrl('/information/select'),
+          method: 'get'
+        }).then(({data}) => {
+          if (data && data.status === 200) {
+            this.informationList = data.data
+          } else {
+            this.$message.error(this.$t(data.message))
+          }
+        })
+      },
     },
     created(request)
     {
@@ -256,6 +308,7 @@
 
       this.loadCategoryList();
       this.loadLabelList();
+      this.loadInformationList();
     },
   };
 </script>

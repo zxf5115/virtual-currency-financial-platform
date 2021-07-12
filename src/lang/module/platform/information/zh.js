@@ -2,6 +2,8 @@ export const information = {
   list: '资讯列表',
   from: '资讯操作',
   view: '查看资讯',
+  comment_info: '评论',
+  similar_info: '关联资讯',
 
   title: '资讯标题',
   picture: '资讯封面',
@@ -67,4 +69,10 @@ export const information = {
       }
     },
   },
+  // 评论
+  comment: {
+    content: '评论内容',
+    nickname: '发表人',
+    create_time: '发表时间',
+  }
 }

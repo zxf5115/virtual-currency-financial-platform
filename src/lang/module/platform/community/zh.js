@@ -7,6 +7,8 @@ export const community = {
   picture: '社区封面',
   content: '社区内容',
   author: '社区作者',
+  is_hot: '是否热门',
+  is_recommend: '是否推荐',
 
   enable: '热门',
   disable: '普通',
