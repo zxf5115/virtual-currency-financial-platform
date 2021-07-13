@@ -29,6 +29,10 @@
             <el-input :placeholder="$t('currency.symbol.quote_currency')" v-model="dataForm.quote_currency"></el-input>
           </el-form-item>
 
+          <el-form-item class="mavon" prop="content" :label="$t('courseware.content')">
+            <editor ref="editor" :value="dataForm.content"></editor>
+          </el-form-item>
+
           <el-form-item :label="$t('common.sort')" prop="sort">
             <el-input-number :placeholder="$t('common.please_input')+$t('common.sort')" v-model="dataForm.sort"></el-input-number>
           </el-form-item>
@@ -50,9 +54,13 @@
 
 <script>
   import common from '@/views/common/base'
+  import Editor from "@/components/form/editor"
   export default
   {
     extends: common,
+    components: {
+      Editor
+    },
     data()
     {
       return {
@@ -63,6 +71,7 @@
           symbol: '',
           base_currency: '',
           quote_currency: '',
+          content: '',
           sort: 0,
         },
         dataRule:
@@ -99,6 +108,7 @@
                 this.dataForm.symbol         = data.data.symbol
                 this.dataForm.base_currency  = data.data.base_currency
                 this.dataForm.quote_currency = data.data.quote_currency
+                this.dataForm.content        = data.data.content
                 this.dataForm.sort           = data.data.sort
               }
             })
@@ -117,6 +127,7 @@
                 'symbol': this.dataForm.symbol,
                 'base_currency': this.dataForm.base_currency,
                 'quote_currency': this.dataForm.quote_currency,
+                'content': this.$refs.editor.content,
                 'sort': this.dataForm.sort,
               })
             }).then(({data}) => {
