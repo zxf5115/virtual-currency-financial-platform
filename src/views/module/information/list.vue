@@ -12,17 +12,22 @@
           </div>
           <div>
             <el-button v-if="isAuth('module:information:category:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_information_category_list'})">
-              {{ $t('information.category.list') }}
+              {{ $t('information.category_info') }}
+            </el-button>
+          </div>
+          <div>
+            <el-button v-if="isAuth('module:information:subject:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_information_subject_list'})">
+              {{ $t('information.subject_info') }}
             </el-button>
           </div>
           <div>
             <el-button v-if="isAuth('module:information:label:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_information_label_list'})">
-              {{ $t('information.label.list') }}
+              {{ $t('information.label_info') }}
             </el-button>
           </div>
           <div>
             <el-button v-if="isAuth('module:information:sensitive:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_information_sensitive_list'})">
-              {{ $t('information.sensitive.list') }}
+              {{ $t('information.sensitive_info') }}
             </el-button>
           </div>
         </div>
@@ -41,6 +46,12 @@
             <el-select v-model="dataForm.category_id" :placeholder="$t('common.please_select') + $t('information.category.title')" clearable>
               <el-option :label="$t('common.all')" value=""></el-option>
               <el-option v-for="(v,k) in categoryList" :label="v.title" :key="k" :value="v.id"></el-option>
+            </el-select>
+          </div>
+          <div>
+            <el-select v-model="dataForm.subject_id" :placeholder="$t('common.please_select') + $t('information.subject.title')" clearable>
+              <el-option :label="$t('common.all')" value=""></el-option>
+              <el-option v-for="(v,k) in subjectList" :label="v.title" :key="k" :value="v.id"></el-option>
             </el-select>
           </div>
           <div>
@@ -81,6 +92,14 @@
             </template>
           </el-table-column>
 
+          <el-table-column :label="$t('information.subject.title')" width="120">
+            <template slot-scope="scope">
+              <span v-if="scope.row.subject">
+                {{ scope.row.subject.title }}
+              </span>
+            </template>
+          </el-table-column>
+
           <el-table-column prop="title" :label="$t('information.title')">
           </el-table-column>
 
@@ -96,6 +115,17 @@
           <el-table-column :label="$t('common.audit_status')" width="100">
             <template slot-scope="scope">
               {{ scope.row.audit_status.text }}
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="is_subject" :label="$t('information.is_subject')" width="100">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.is_subject.value"
+                :active-value="1"
+                :inactive-value="2"
+                @change="handleStatus($event, scope.row.id, 'is_subject')">
+              </el-switch>
             </template>
           </el-table-column>
 
@@ -187,9 +217,11 @@
         model: 'information',
         category_id: 0,
         categoryList: [],
+        subjectList: [],
         auditList: [],
         dataForm: [
           'category_id',
+          'subject_id',
           'title',
           'audit_status',
           'create_time',
@@ -204,6 +236,18 @@
         }).then(({data}) => {
           if (data && data.status === 200) {
             this.categoryList = data.data
+          } else {
+            this.$message.error(this.$t(data.message))
+          }
+        })
+      },
+      loadSubjectList () {
+        this.$http({
+          url: this.$http.adornUrl('/information/subject/select'),
+          method: 'get'
+        }).then(({data}) => {
+          if (data && data.status === 200) {
+            this.subjectList = data.data
           } else {
             this.$message.error(this.$t(data.message))
           }
@@ -224,6 +268,7 @@
     },
     mounted () {
       this.loadCategoryList();
+      this.loadSubjectList();
       this.loadAuditList();
     },
     created() {

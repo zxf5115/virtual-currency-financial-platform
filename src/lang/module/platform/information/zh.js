@@ -4,6 +4,10 @@ export const information = {
   view: '查看资讯',
   comment_info: '评论',
   similar_info: '关联资讯',
+  category_info: '资讯分类',
+  subject_info: '资讯专题',
+  label_info: '资讯标签',
+  sensitive_info: '资讯敏感词',
 
   title: '资讯标题',
   picture: '资讯封面',
@@ -11,6 +15,7 @@ export const information = {
   source: '资讯来源',
   author: '资讯作者',
   read_total: '阅读总数',
+  is_subject: '是否专题',
   is_top: '是否置顶',
   is_recommend: '是否推荐',
   is_comment: '是否评论',
@@ -43,7 +48,22 @@ export const information = {
       }
     },
   },
-  // 资讯分类
+
+  // 资讯专题
+  subject: {
+    list: '资讯专题列表',
+    from: '资讯专题操作',
+
+    title: '资讯专题标题',
+
+    rules: {
+      title: {
+        require: '资讯专题标题不能为空',
+      }
+    },
+  },
+
+  // 资讯标签
   label: {
     list: '资讯标签列表',
     from: '资讯标签操作',

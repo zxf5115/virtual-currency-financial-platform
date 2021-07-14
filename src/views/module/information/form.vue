@@ -29,6 +29,12 @@
                 </el-select>
               </el-form-item>
 
+              <el-form-item :label="$t('information.subject.title')" prop="category_id">
+                <el-select v-model="dataForm.subject_id" :placeholder="$t('common.please_select')+$t('information.subject.title')">
+                  <el-option v-for="(v,k) in subjectList" :label="v.title" :key="k" :value="v.id"></el-option>
+                </el-select>
+              </el-form-item>
+
               <el-form-item :label="$t('information.label.title')" prop="label_id">
                 <el-select v-model="dataForm.label_id" :placeholder="$t('common.please_select')+$t('information.label.title')" multiple collapse-tags>
                   <el-option v-for="(v,k) in labelList" :label="v.title" :key="k" :value="v.id"></el-option>
@@ -63,6 +69,10 @@
 
               <el-form-item :label="$t('information.read_total')" prop="read_total">
                 <el-input-number :placeholder="$t('information.read_total')" :min="0" v-model="dataForm.read_total"></el-input-number>
+              </el-form-item>
+
+              <el-form-item :label="$t('information.is_subject')" prop="is_subject">
+                <el-switch v-model="dataForm.is_subject" :active-value="1" :inactive-value="2" :active-text="$t('common.yes')" :inactive-text="$t('common.no')"></el-switch>
               </el-form-item>
 
               <el-form-item :label="$t('information.is_top')" prop="is_top">
@@ -134,6 +144,7 @@
       return {
         model: 'information',
         categoryList: [],
+        subjectList: [],
         labelList: [],
         informationList: [],
         upload_headers:{},
@@ -141,6 +152,7 @@
         {
           id: 0,
           category_id: '',
+          subject_id: '',
           label_id: [],
           title: '',
           picture: '',
@@ -148,6 +160,7 @@
           source: '',
           author: '',
           read_total: 0,
+          is_subject: 2,
           is_top: 2,
           is_recommend: 2,
           is_comment: 2,
@@ -189,12 +202,14 @@
             }).then(({data}) => {
               if (data && data.status === 200) {
                 this.dataForm.category_id  = data.data.category_id
+                this.dataForm.subject_id   = data.data.subject_id
                 this.dataForm.title        = data.data.title
                 this.dataForm.picture      = data.data.picture
                 this.dataForm.content      = data.data.content
                 this.dataForm.source       = data.data.source
                 this.dataForm.author       = data.data.author
                 this.dataForm.read_total   = data.data.read_total
+                this.dataForm.is_subject   = data.data.is_subject.value
                 this.dataForm.is_top       = data.data.is_top.value
                 this.dataForm.is_recommend = data.data.is_recommend.value
                 this.dataForm.is_comment   = data.data.is_comment.value
@@ -233,6 +248,7 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'category_id': this.dataForm.category_id,
+                'subject_id': this.dataForm.subject_id,
                 'label_id': this.dataForm.label_id,
                 'title': this.dataForm.title,
                 'picture': this.dataForm.picture,
@@ -240,6 +256,7 @@
                 'source': this.dataForm.source,
                 'author': this.dataForm.author,
                 'read_total': this.dataForm.read_total,
+                'is_subject': this.dataForm.is_subject,
                 'is_top': this.dataForm.is_top,
                 'is_recommend': this.dataForm.is_recommend,
                 'is_comment': this.dataForm.is_comment,
@@ -269,6 +286,18 @@
         }).then(({data}) => {
           if (data && data.status === 200) {
             this.categoryList = data.data
+          } else {
+            this.$message.error(this.$t(data.message))
+          }
+        })
+      },
+      loadSubjectList () {
+        this.$http({
+          url: this.$http.adornUrl('/information/subject/select'),
+          method: 'get'
+        }).then(({data}) => {
+          if (data && data.status === 200) {
+            this.subjectList = data.data
           } else {
             this.$message.error(this.$t(data.message))
           }
@@ -307,6 +336,7 @@
       this.upload_headers.Authorization = 'Bearer ' + localStorage.getItem('token');
 
       this.loadCategoryList();
+      this.loadSubjectList();
       this.loadLabelList();
       this.loadInformationList();
     },
