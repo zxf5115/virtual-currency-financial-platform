@@ -39,7 +39,7 @@
           <el-table-column prop="username" :label="$t('member.username')" width="100">
           </el-table-column>
 
-          <el-table-column :label="$t('member.info')" width="300">
+          <el-table-column :label="$t('member.info')" width="260">
             <template slot-scope="scope">
               <dl class="table_dl">
                 <dt>
@@ -63,7 +63,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column :label="$t('member.vip_end_time')">
+          <el-table-column :label="$t('member.vip_end_time')" width="140">
             <template slot-scope="scope">
               <spna v-if="scope.row.vip_relevance && 1 < scope.row.vip_relevance.vip_id">
                 {{ scope.row.vip_relevance.end_time }}
