@@ -64,8 +64,13 @@
           </el-table-column>
 
           <el-table-column :label="$t('member.vip_end_time')">
-            <template slot-scope="scope" v-if="scope.row.vip_relevance">
-              {{ scope.row.vip_relevance.end_time }}
+            <template slot-scope="scope">
+              <spna v-if="scope.row.vip_relevance && 1 < scope.row.vip_relevance.vip_id">
+                {{ scope.row.vip_relevance.end_time }}
+              </spna>
+              <span v-else>
+                {{ $t('common.permanent') }}
+              </span>
             </template>
           </el-table-column>
 

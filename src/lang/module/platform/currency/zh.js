@@ -32,6 +32,7 @@ export const currency = {
     symbol: '交易对',
     base_currency: '基础币种',
     quote_currency: '报价币种',
+    content: '交易对介绍',
     state: '交易对状态',
 
     rules: {

@@ -80,6 +80,7 @@ export const common =  {
   man: '男',
   woman: '女',
   secrecy: '保密',
+  permanent: '永久',
 
   sms_notification: '短信通知',
   send_sms_notification: '是否向该用户发送短信通知',

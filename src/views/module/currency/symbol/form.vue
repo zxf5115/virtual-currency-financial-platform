@@ -29,7 +29,7 @@
             <el-input :placeholder="$t('currency.symbol.quote_currency')" v-model="dataForm.quote_currency"></el-input>
           </el-form-item>
 
-          <el-form-item class="mavon" prop="content" :label="$t('courseware.content')">
+          <el-form-item class="mavon" prop="content" :label="$t('currency.symbol.content')">
             <editor ref="editor" :value="dataForm.content"></editor>
           </el-form-item>
 

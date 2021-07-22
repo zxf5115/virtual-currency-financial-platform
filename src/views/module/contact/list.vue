@@ -48,7 +48,7 @@
           <el-table-column prop="create_time" :label="$t('common.create_time')">
           </el-table-column>
 
-          <el-table-column :label="$t('common.handle')" fixed="right" width="240">
+          <el-table-column :label="$t('common.handle')" fixed="right" width="100">
             <template slot-scope="scope">
               <el-button v-if="isAuth('module:contact:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
                 {{ $t('common.delete') }}

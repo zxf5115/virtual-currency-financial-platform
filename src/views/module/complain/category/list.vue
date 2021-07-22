@@ -43,14 +43,10 @@
           <el-table-column prop="create_time" :label="$t('common.create_time')">
           </el-table-column>
 
-          <el-table-column :label="$t('common.handle')" fixed="right" width="420">
+          <el-table-column :label="$t('common.handle')" fixed="right" width="300">
             <template slot-scope="scope">
               <el-button v-if="isAuth('module:complain:category:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_complain_category_form', query: {id : scope.row.id}})">
                 {{ $t('common.update') }}
-              </el-button>
-
-              <el-button v-if="isAuth('module:complain:list')" type="info" icon="el-icon-search" @click="$router.push({name: 'module_complain_list', query: {category_id: scope.row.id}})">
-                {{ $t('complain.list') }}
               </el-button>
 
               <el-button v-if="isAuth('module:complain:category:status')" :type="scope.row.status.value == 2 ? 'danger' : 'success'" :icon="scope.row.status.value == 1 ? 'el-icon-check' : 'el-icon-close'" @click="enableHandle(scope.row.id, scope.row.status.value)">
