@@ -48,7 +48,16 @@
             </template>
           </el-table-column>
 
+          <el-table-column prop="title" :label="$t('complain.title')">
+          </el-table-column>
+
           <el-table-column prop="content" :label="$t('complain.content')">
+          </el-table-column>
+
+          <el-table-column prop="customer_name" :label="$t('complain.customer_name')">
+          </el-table-column>
+
+          <el-table-column prop="contact" :label="$t('complain.contact')">
           </el-table-column>
 
           <el-table-column :label="$t('complain.read_status')">

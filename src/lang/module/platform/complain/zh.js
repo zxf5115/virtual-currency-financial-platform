@@ -4,7 +4,10 @@ export const complain = {
   read: '标记阅读',
 
   type: '投诉类型',
-  content: '投诉内容',
+  title: '反馈问题',
+  content: '问题描述',
+  customer_name: '联系人',
+  contact: '联系方式',
   read_status: '阅读状态',
 
 
