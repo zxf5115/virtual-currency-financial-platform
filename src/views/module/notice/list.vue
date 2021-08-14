@@ -10,11 +10,11 @@
               </el-button>
             </router-link>
           </div>
-          <div>
+          <!-- <div>
             <el-button v-if="isAuth('module:notice:category:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_notice_category_list'})">
               {{ $t('notice.category.list') }}
             </el-button>
-          </div>
+          </div> -->
         </div>
 
         <div class="admin_main_block_right">
@@ -32,12 +32,6 @@
             </el-input>
           </div>
           <div>
-            <el-select v-model="dataForm.category_id" :placeholder="$t('common.please_select') + $t('notice.category.title')" clearable>
-              <el-option :label="$t('common.all')" value=""></el-option>
-              <el-option v-for="(v,k) in categoryList" :label="v.title" :key="k" :value="v.id"></el-option>
-            </el-select>
-          </div>
-          <div>
             <el-button icon="el-icon-search" @click="getDataList(true)">
               {{ $t('common.search') }}
             </el-button>
@@ -51,12 +45,6 @@
           </el-table-column>
 
           <el-table-column prop="id" label="#"  width="70px">
-          </el-table-column>
-
-          <el-table-column prop="category_id" :label="$t('notice.category.title')">
-            <template slot-scope="scope" v-if="scope.row.category">
-              {{ scope.row.category.title }}
-            </template>
           </el-table-column>
 
           <el-table-column prop="content" :label="$t('notice.content')">
@@ -100,29 +88,10 @@
     data() {
       return {
         model: 'notice',
-        categoryList: [],
         dataForm: [
-          'category_id',
           'title'
         ]
       };
-    },
-    methods: {
-      loadCategoryList () {
-        this.$http({
-          url: this.$http.adornUrl('/notice/category/select'),
-          method: 'get'
-        }).then(({data}) => {
-          if (data && data.status === 200) {
-            this.categoryList = data.data
-          } else {
-            this.$notice.error(this.$t(data.notice))
-          }
-        })
-      }
-    },
-    mounted () {
-      this.loadCategoryList();
     },
     created() {
       this.getDataList()

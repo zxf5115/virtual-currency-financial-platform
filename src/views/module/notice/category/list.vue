@@ -13,11 +13,11 @@
         </div>
         <div class="admin_main_block_right">
           <div>
-            <el-button v-if="isAuth('module:notice:category:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle()">
+            <!-- <el-button v-if="isAuth('module:notice:category:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle()">
               {{ $t('common.batch_delete') }}
             </el-button>
           </div>
-          <div class="mr10">
+          <div class="mr10"> -->
             <el-button icon="el-icon-back" @click="$router.push({name: 'module_notice_list'})">
               {{ $t('common.return') }}
             </el-button>
@@ -43,15 +43,15 @@
           <el-table-column prop="create_time" :label="$t('common.create_time')">
           </el-table-column>
 
-          <el-table-column :label="$t('common.handle')" fixed="right" width="200">
+          <el-table-column :label="$t('common.handle')" fixed="right" width="100">
             <template slot-scope="scope">
               <el-button v-if="isAuth('module:notice:category:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_notice_category_form', query: {id : scope.row.id}})">
                 {{ $t('common.update') }}
               </el-button>
 
-              <el-button v-if="isAuth('module:notice:category:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
+              <!-- <el-button v-if="isAuth('module:notice:category:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
                 {{ $t('common.delete') }}
-              </el-button>
+              </el-button> -->
             </template>
           </el-table-column>
         </el-table>
