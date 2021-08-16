@@ -50,7 +50,7 @@
 
           <el-form-item class="mavon" prop="content" :label="$t('courseware.content')">
             <!-- <editor ref="editor" :value="dataForm.content"></editor> -->
-            <el-input :placeholder="$t('common.please_input') + $t('courseware.content')" v-model="dataForm.content"></el-input>
+            <el-input type="textarea" :placeholder="$t('common.please_input') + $t('courseware.content')" v-model="dataForm.content"></el-input>
           </el-form-item>
 
           <el-form-item prop="money" :label="$t('courseware.money')">
