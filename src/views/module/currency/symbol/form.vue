@@ -17,6 +17,10 @@
 
       <div class="admin_form_main">
         <el-form label-width="140px" ref="dataForm" :model="dataForm" :rules="dataRule">
+          <el-form-item :label="$t('currency.symbol.market')" prop="market">
+            <el-input :placeholder="$t('currency.symbol.market')" v-model="dataForm.market"></el-input>
+          </el-form-item>
+
           <el-form-item :label="$t('currency.symbol.symbol')" prop="symbol">
             <el-input :placeholder="$t('currency.symbol.symbol')" v-model="dataForm.symbol"></el-input>
           </el-form-item>
@@ -68,6 +72,7 @@
         dataForm:
         {
           id: 0,
+          market: '',
           symbol: '',
           base_currency: '',
           quote_currency: '',
@@ -105,6 +110,7 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
+                this.dataForm.market         = data.data.market
                 this.dataForm.symbol         = data.data.symbol
                 this.dataForm.base_currency  = data.data.base_currency
                 this.dataForm.quote_currency = data.data.quote_currency
@@ -124,6 +130,7 @@
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
+                'market': this.dataForm.market,
                 'symbol': this.dataForm.symbol,
                 'base_currency': this.dataForm.base_currency,
                 'quote_currency': this.dataForm.quote_currency,

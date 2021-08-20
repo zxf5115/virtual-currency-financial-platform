@@ -98,7 +98,10 @@ export default {
           'base_currency': this.dataForm.base_currency,
           'quote_currency': this.dataForm.quote_currency,
           'courseware_title': this.dataForm.courseware_title,
-
+          'slug': this.dataForm.slug,
+          'symbol': this.dataForm.symbol,
+          'fullname': this.dataForm.fullname,
+          'market': this.dataForm.market,
         })
       }).then(({data}) => {
         if (data && data.status === 200)

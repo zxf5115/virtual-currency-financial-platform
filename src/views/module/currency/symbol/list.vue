@@ -23,6 +23,10 @@
       <div class="admin_main_block_top">
         <div class="admin_main_block_left">
           <div>
+            <el-input v-model="dataForm.market" :placeholder="$t('common.please_input') + $t('currency.symbol.market')" clearable>
+            </el-input>
+          </div>
+          <div>
             <el-input v-model="dataForm.symbol" :placeholder="$t('common.please_input') + $t('currency.symbol.symbol')" clearable>
             </el-input>
           </div>
@@ -58,12 +62,6 @@
           </el-table-column>
 
           <el-table-column prop="quote_currency" :label="$t('currency.symbol.quote_currency')">
-          </el-table-column>
-
-          <el-table-column prop="state" :label="$t('currency.symbol.state')">
-            <template slot-scope="scope">
-              {{ scope.row.state.text }}
-            </template>
           </el-table-column>
 
           <el-table-column prop="sort" :label="$t('common.sort')">
@@ -108,6 +106,7 @@
       return {
         model: 'currency/symbol',
         dataForm: [
+          'market',
           'symbol',
           'base_currency',
           'quote_currency',

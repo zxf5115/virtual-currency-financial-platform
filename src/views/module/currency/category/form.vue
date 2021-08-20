@@ -15,14 +15,48 @@
         </div>
       </div>
 
-      <div class="admin_form_main">
+      <div class="admin_form_main color">
         <el-form label-width="140px" ref="dataForm" :model="dataForm" :rules="dataRule">
-          <el-form-item :label="$t('currency.category.code')" prop="code">
-            <el-input :placeholder="$t('currency.category.code')" v-model="dataForm.code"></el-input>
+          <el-form-item :label="$t('currency.category.slug')" prop="slug">
+            <el-input :placeholder="$t('currency.category.slug')" v-model="dataForm.slug"></el-input>
           </el-form-item>
 
-          <el-form-item :label="$t('currency.category.title')" prop="title">
-            <el-input :placeholder="$t('currency.category.title')" v-model="dataForm.title"></el-input>
+          <el-form-item :label="$t('currency.category.symbol')" prop="symbol">
+            <el-input :placeholder="$t('currency.category.symbol')" v-model="dataForm.symbol"></el-input>
+          </el-form-item>
+
+          <el-form-item :label="$t('currency.category.fullname')" prop="fullname">
+            <el-input :placeholder="$t('currency.category.fullname')" v-model="dataForm.fullname"></el-input>
+          </el-form-item>
+
+          <el-form-item :label="$t('currency.category.logo_url')" prop="logo_url">
+            <el-upload class="avatar-uploader" :action="this.$http.adornUrl('/file/picture')" :show-file-list="false" :headers="upload_headers" :on-success="handlePictureSuccess" :before-upload="beforePictureUpload">
+              <img v-if="dataForm.logo_url" :src="dataForm.logo_url" class="avatar-upload">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+            <div class="red">
+              上传图片分辨率为：200*200
+            </div>
+          </el-form-item>
+
+          <el-form-item :label="$t('currency.category.market_cap_usd')" prop="market_cap_usd">
+            <el-input-number :placeholder="$t('currency.category.market_cap_usd')" v-model="dataForm.market_cap_usd" :precision="4"></el-input-number>
+          </el-form-item>
+
+          <el-form-item :label="$t('currency.category.available_supply')" prop="available_supply">
+            <el-input-number :placeholder="$t('currency.category.available_supply')" v-model="dataForm.available_supply" :precision="4"></el-input-number>
+          </el-form-item>
+
+          <el-form-item :label="$t('currency.category.total_supply')" prop="total_supply">
+            <el-input-number :placeholder="$t('currency.category.total_supply')" v-model="dataForm.total_supply" :precision="4"></el-input-number>
+          </el-form-item>
+
+          <el-form-item :label="$t('currency.category.max_supply')" prop="max_supply">
+            <el-input-number :placeholder="$t('currency.category.max_supply')" v-model="dataForm.max_supply" :precision="4"></el-input-number>
+          </el-form-item>
+
+          <el-form-item :label="$t('currency.category.issue_time')" prop="issue_time">
+            <el-date-picker  v-model="dataForm.issue_time" type="datetime" :placeholder="$t('currency.category.issue_time')"></el-date-picker>
           </el-form-item>
 
           <el-form-item :label="$t('currency.category.is_hot')" prop="is_hot">
@@ -65,11 +99,19 @@
     {
       return {
         model: 'currency/category',
+        upload_headers:{},
         dataForm:
         {
           id: 0,
-          code: '',
-          title: '',
+          slug: '',
+          symbol: '',
+          fullname: '',
+          logo_url: '',
+          market_cap_usd: '',
+          available_supply: '',
+          total_supply: '',
+          max_supply: '',
+          issue_time: '',
           is_hot: 2,
           is_main: 2,
           is_defi: 2,
@@ -77,11 +119,11 @@
         },
         dataRule:
         {
-          code: [
-            { required: true, message: this.$t('currency.category.rules.code.require'), trigger: 'blur' },
+          slug: [
+            { required: true, message: this.$t('currency.category.rules.slug.require'), trigger: 'blur' },
           ],
-          title: [
-            { required: true, message: this.$t('currency.category.rules.title.require'), trigger: 'blur' },
+          symbol: [
+            { required: true, message: this.$t('currency.category.rules.symbol.require'), trigger: 'blur' },
           ],
         }
       };
@@ -103,12 +145,19 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
-                this.dataForm.code    = data.data.code
-                this.dataForm.title   = data.data.title
-                this.dataForm.is_hot  = data.data.is_hot.value
-                this.dataForm.is_main = data.data.is_main.value
-                this.dataForm.is_defi = data.data.is_defi.value
-                this.dataForm.sort    = data.data.sort
+                this.dataForm.slug             = data.data.slug
+                this.dataForm.symbol           = data.data.symbol
+                this.dataForm.fullname         = data.data.fullname
+                this.dataForm.logo_url         = data.data.logo_url
+                this.dataForm.market_cap_usd   = data.data.market_cap_usd
+                this.dataForm.available_supply = data.data.available_supply
+                this.dataForm.total_supply     = data.data.total_supply
+                this.dataForm.max_supply       = data.data.max_supply
+                this.dataForm.issue_time       = data.data.issue_time
+                this.dataForm.is_hot           = data.data.is_hot.value
+                this.dataForm.is_main          = data.data.is_main.value
+                this.dataForm.is_defi          = data.data.is_defi.value
+                this.dataForm.sort             = data.data.sort
               }
             })
           }
@@ -123,8 +172,15 @@
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
-                'code': this.dataForm.code,
-                'title': this.dataForm.title,
+                'slug': this.dataForm.slug,
+                'symbol': this.dataForm.symbol,
+                'fullname': this.dataForm.fullname,
+                'logo_url': this.dataForm.logo_url,
+                'market_cap_usd': this.dataForm.market_cap_usd,
+                'available_supply': this.dataForm.available_supply,
+                'total_supply': this.dataForm.total_supply,
+                'max_supply': this.dataForm.max_supply,
+                'issue_time': this.dataForm.issue_time,
                 'is_hot': this.dataForm.is_hot,
                 'is_main': this.dataForm.is_main,
                 'is_defi': this.dataForm.is_defi,
@@ -148,6 +204,9 @@
     },
     created(request)
     {
+      // 要保证取到
+      this.upload_headers.Authorization = 'Bearer ' + localStorage.getItem('token');
+
       this.init();
     }
   };

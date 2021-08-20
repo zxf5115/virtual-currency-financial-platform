@@ -23,11 +23,15 @@
       <div class="admin_main_block_top">
         <div class="admin_main_block_left">
           <div>
-            <el-input v-model="dataForm.code" :placeholder="$t('common.please_input') + $t('currency.category.code')" clearable>
+            <el-input v-model="dataForm.slug" :placeholder="$t('common.please_input') + $t('currency.category.slug')" clearable>
             </el-input>
           </div>
           <div>
-            <el-input v-model="dataForm.title" :placeholder="$t('common.please_input') + $t('currency.category.title')" clearable>
+            <el-input v-model="dataForm.symbol" :placeholder="$t('common.please_input') + $t('currency.category.symbol')" clearable>
+            </el-input>
+          </div>
+          <div>
+            <el-input v-model="dataForm.fullname" :placeholder="$t('common.please_input') + $t('currency.category.fullname')" clearable>
             </el-input>
           </div>
           <div>
@@ -47,10 +51,28 @@
           <el-table-column prop="id" label="#" width="70px">
           </el-table-column>
 
-          <el-table-column prop="code" :label="$t('currency.category.code')">
+          <el-table-column prop="slug" :label="$t('currency.category.slug')" width="140">
           </el-table-column>
 
-          <el-table-column prop="title" :label="$t('currency.category.title')">
+          <el-table-column prop="symbol" :label="$t('currency.category.symbol')" width="80">
+          </el-table-column>
+
+          <el-table-column prop="fullname" :label="$t('currency.category.fullname')" width="140">
+          </el-table-column>
+
+          <el-table-column prop="market_cap_usd" :label="$t('currency.category.market_cap_usd')" width="160">
+          </el-table-column>
+
+          <el-table-column prop="available_supply" :label="$t('currency.category.available_supply')" width="160">
+          </el-table-column>
+
+          <el-table-column prop="total_supply" :label="$t('currency.category.total_supply')" width="160">
+          </el-table-column>
+
+          <el-table-column prop="max_supply" :label="$t('currency.category.max_supply')" width="160">
+          </el-table-column>
+
+          <el-table-column prop="issue_time" :label="$t('currency.category.issue_time')" width="140">
           </el-table-column>
 
           <el-table-column :label="$t('currency.category.is_hot')" width="100">
@@ -89,7 +111,7 @@
           <el-table-column prop="sort" :label="$t('common.sort')">
           </el-table-column>
 
-          <el-table-column prop="create_time" :label="$t('common.create_time')">
+          <el-table-column prop="create_time" :label="$t('common.create_time')" width="140">
           </el-table-column>
 
           <el-table-column :label="$t('common.handle')" fixed="right" width="200">
@@ -128,8 +150,9 @@
       return {
         model: 'currency/category',
         dataForm: [
-          'code',
-          'title',
+          'slug',
+          'symbol',
+          'fullname',
         ]
       };
     },
