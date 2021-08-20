@@ -55,6 +55,9 @@
           <el-table-column prop="id" label="#" width="70px">
           </el-table-column>
 
+          <el-table-column prop="market" :label="$t('currency.symbol.market')">
+          </el-table-column>
+
           <el-table-column prop="symbol" :label="$t('currency.symbol.symbol')">
           </el-table-column>
 
