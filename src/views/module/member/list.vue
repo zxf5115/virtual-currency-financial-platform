@@ -123,7 +123,7 @@
                 {{ $t('common.certification') }}
               </el-button>
 
-              <el-button v-if="isAuth('module:member:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
+              <el-button v-if="isAuth('module:member:delete') && scope.row.id != 1" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
                 {{ $t('common.delete') }}
               </el-button>
             </template>
