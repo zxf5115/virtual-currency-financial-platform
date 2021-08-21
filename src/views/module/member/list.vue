@@ -115,7 +115,7 @@
                 {{ $t('common.view') }}
               </el-button>
 
-              <el-button v-if="isAuth('module:member:form') && 1 != scope.row.audit_status.value" type="warning" icon="el-icon-check" @click="$router.push({name: 'module_member_form', query: {id: scope.row.id}})">
+              <el-button v-if="isAuth('module:member:form') && scope.row.id != 1 && 1 != scope.row.audit_status.value" type="warning" icon="el-icon-check" @click="$router.push({name: 'module_member_form', query: {id: scope.row.id}})">
                 {{ $t('common.audit') }}
               </el-button>
 
