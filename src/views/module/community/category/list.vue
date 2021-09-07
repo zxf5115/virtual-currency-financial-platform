@@ -37,7 +37,7 @@
           <el-table-column :label="$t('community.category.symbol')">
             <template slot-scope="scope">
               <span v-if="scope.row.symbol">
-                {{ scope.row.symbol.title }}
+                {{ scope.row.symbol.symbol }}
               </span>
             </template>
           </el-table-column>
