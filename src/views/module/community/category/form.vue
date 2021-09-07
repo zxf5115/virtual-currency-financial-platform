@@ -19,7 +19,7 @@
         <el-form label-width="140px" ref="dataForm" :model="dataForm" :rules="dataRule">
           <el-form-item :label="$t('community.category.symbol')" prop="symbol_id">
             <el-select v-model="dataForm.symbol_id" filterable :placeholder="$t('common.please_select')+$t('community.category.symbol')">
-              <el-option v-for="(v,k) in symbolList" :label="v.title" :key="k" :value="v.id"></el-option>
+              <el-option v-for="(v,k) in symbolList" :label="v.symbol" :key="k" :value="v.id"></el-option>
             </el-select>
           </el-form-item>
 
