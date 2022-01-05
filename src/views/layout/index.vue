@@ -7,7 +7,7 @@
         <el-scrollbar>
           <!-- LOGO -->
           <div class="head_logo">
-            <span>币码翁</span>
+            <span>凌晨财经</span>
             <font v-show="isShow">管理平台</font>
           </div>
           <!-- 左侧导航 -->
