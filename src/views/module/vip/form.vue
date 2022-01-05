@@ -23,7 +23,7 @@
           </el-form-item>
 
           <el-form-item class="mavon" prop="content" :label="$t('vip.content')">
-            <editor ref="editor" :value="dataForm.content"></editor>
+            <el-input type="textarea" :placeholder="$t('vip.content')" v-model="dataForm.content"></el-input>
           </el-form-item>
 
           <el-form-item :label="$t('vip.money')" prop="money">
@@ -119,7 +119,7 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'title': this.dataForm.title,
-                'content': this.$refs.editor.content,
+                'content': this.dataForm.content,
                 'money': this.dataForm.money,
                 'valid_time': this.dataForm.valid_time,
               })
