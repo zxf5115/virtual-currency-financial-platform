@@ -21,7 +21,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button v-if="isAuth('setting:agreement')" type="primary" @click="dataFormSubmit()">
+            <el-button v-if="isAuth('setting:vip')" type="primary" @click="dataFormSubmit()">
               {{ $t('common.confirm') }}
             </el-button>
           </el-form-item>
@@ -41,7 +41,7 @@
     },
     data() {
       return {
-        model: 'setting/service',
+        model: 'setting/vip',
         upload_headers:{},
         dataForm:
         {
