@@ -55,6 +55,8 @@ export const config = {
     privacy: '隐私协议',
     specification: '账户使用规范',
     liability: '免责声明',
+    service: '服务协议',
+    vip: '贵宾说明',
 
     name: '协议名称',
     content: '协议内容',
