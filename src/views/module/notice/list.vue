@@ -10,11 +10,11 @@
               </el-button>
             </router-link>
           </div>
-          <!-- <div>
+          <div>
             <el-button v-if="isAuth('module:notice:category:list')" icon="el-icon-price-tag" @click="$router.push({name: 'module_notice_category_list'})">
               {{ $t('notice.category.list') }}
             </el-button>
-          </div> -->
+          </div>
         </div>
 
         <div class="admin_main_block_right">
