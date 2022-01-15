@@ -18,6 +18,12 @@
       <div class="admin_form_main">
         <el-form label-width="120px" ref="dataForm" :model="dataForm" :rules="dataRule">
 
+          <el-form-item :label="$t('notice.category.title')" prop="category_id">
+            <el-select v-model="dataForm.category_id" :placeholder="$t('common.please_select')+$t('notice.category.title')">
+              <el-option v-for="(v,k) in categoryList" :label="v.title" :key="k" :value="v.id"></el-option>
+            </el-select>
+          </el-form-item>
+
           <el-form-item :label="$t('notice.content')" prop="content">
             <el-input type="textarea" :placeholder="$t('common.please_input')+$t('notice.content')" v-model="dataForm.content"></el-input>
           </el-form-item>
@@ -43,9 +49,11 @@
     data() {
       return {
         model: 'notice',
+        categoryList: [],
         dataForm:
         {
           id: 0,
+          category_id: '',
           content: ''
         },
         dataRule:
@@ -71,6 +79,7 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.status === 200) {
+                this.dataForm.category_id = data.data.category_id
                 this.dataForm.content     = data.data.content
               }
             })
@@ -78,7 +87,7 @@
         })
       },
       // 表单提交
-      dataFormSubmit () {console.log(1);
+      dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
@@ -86,6 +95,7 @@
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
+                'category_id': this.dataForm.category_id,
                 'content': this.dataForm.content,
               })
             }).then(({data}) => {
@@ -102,10 +112,27 @@
       resetForm:function()
       {
         this.$refs['dataForm'].resetFields();
+      },
+      loadCategoryList () {
+        this.$http({
+          url: this.$http.adornUrl('/notice/category/select'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'type': 1
+          })
+        }).then(({data}) => {
+          if (data && data.status === 200) {
+            this.categoryList = data.data
+          } else {
+            this.$message.error(this.$t(data.message))
+          }
+        })
       }
     },
     created() {
       this.init();
+
+      this.loadCategoryList();
     }
   };
 </script>
