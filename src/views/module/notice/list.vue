@@ -53,12 +53,8 @@
           <el-table-column prop="create_time" :label="$t('common.create_time')">
           </el-table-column>
 
-          <el-table-column :label="$t('common.handle')" fixed="right" width="200">
+          <el-table-column :label="$t('common.handle')" fixed="right" width="100">
             <template slot-scope="scope">
-              <el-button v-if="isAuth('module:notice:form')" type="primary" icon="el-icon-edit" @click="$router.push({name: 'module_notice_form', query: {id: scope.row.id}})">
-                {{ $t('common.update') }}
-              </el-button>
-
               <el-button v-if="isAuth('module:notice:delete')" type="danger" icon="el-icon-delete" @click="deleteHandle(scope.row.id)">
                 {{ $t('common.delete') }}
               </el-button>
